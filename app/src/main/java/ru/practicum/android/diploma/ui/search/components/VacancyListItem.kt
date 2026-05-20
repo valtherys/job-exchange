@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.theme.Regular16
 import ru.practicum.android.diploma.util.formatSalary
 
 private val LogoSize = 48.dp
 private val LogoCornerRadius = 12.dp
-private val ItemSpacing = 8.dp
+private val ItemVerticalSpacing = 4.dp
+private val ItemVerticalPadding = 16.dp
 
 @Composable
 fun VacancyListItem(
@@ -40,7 +42,7 @@ fun VacancyListItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(vertical = ItemVerticalPadding),
         verticalAlignment = Alignment.Top,
     ) {
         VacancyLogo(
@@ -59,44 +61,26 @@ fun VacancyListItem(
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
-            val salaryText = formatSalary(vacancy.salary)
-            if (salaryText.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(ItemSpacing))
+            vacancy.company?.takeIf { it.isNotBlank() }?.let { company ->
+                Spacer(modifier = Modifier.height(ItemVerticalSpacing))
                 Text(
-                    text = salaryText,
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = company,
+                    style = Regular16,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-            } else {
-                Spacer(modifier = Modifier.height(ItemSpacing))
-                Text(
-                    text = stringResource(R.string.search_vacancies_salary_not_specified),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
             }
-            vacancy.company?.let { company ->
-                Spacer(modifier = Modifier.height(ItemSpacing))
-                Text(
-                    text = company,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            vacancy.city?.let { city ->
-                Spacer(modifier = Modifier.height(ItemSpacing))
-                Text(
-                    text = city,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            Spacer(modifier = Modifier.height(ItemVerticalSpacing))
+            Text(
+                text = formatSalary(vacancy.salary).ifEmpty {
+                    stringResource(R.string.search_vacancies_salary_not_specified)
+                },
+                style = Regular16,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }
@@ -126,10 +110,10 @@ private fun VacancyLogo(
 }
 
 private fun buildVacancyTitle(vacancy: Vacancy): String {
-    val company = vacancy.company
-    return if (company.isNullOrBlank()) {
+    val city = vacancy.city
+    return if (city.isNullOrBlank()) {
         vacancy.name
     } else {
-        "${vacancy.name}, $company"
+        "${vacancy.name}, $city"
     }
 }

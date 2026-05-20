@@ -4,9 +4,9 @@
     <string name="favorites">Избранное</string>
     <string name="team">Команда</string>
 
+    <string name="search_vacancies_title">Поиск вакансий</string>
     <string name="search_vacancies_hint">Введите запрос</string>
-    <string name="search_vacancies_placeholder_title">Начните поиск</string>
-    <string name="search_vacancies_placeholder_subtitle">Введите ключевые слова в поле поиска</string>
+    <string name="search_vacancies_clear">Очистить поисковый запрос</string>
     <string name="search_vacancies_filters">Фильтры</string>
     <string name="search_vacancies_salary_not_specified">Зарплата не указана</string>
 </resources>
