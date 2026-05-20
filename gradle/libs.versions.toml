@@ -81,6 +81,7 @@ koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 
 # Testing
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }

@@ -67,6 +67,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.coil)
     implementation(libs.compose.ui)
+    implementation(libs.compose.material.icons.extended)
 
     testImplementation(libs.junit4)
     testImplementation(libs.coroutines.test)
