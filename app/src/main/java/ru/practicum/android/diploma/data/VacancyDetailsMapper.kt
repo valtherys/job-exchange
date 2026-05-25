@@ -82,4 +82,3 @@ private fun EmployerDto.toDomain(): Employer = Employer(
     name = name,
     logo = logo
 )
-
