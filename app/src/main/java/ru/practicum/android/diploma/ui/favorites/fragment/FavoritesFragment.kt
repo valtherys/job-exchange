@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.presentation.favorites.viewmodel.FavoritesViewModel
 import ru.practicum.android.diploma.ui.favorites.screen.FavoritesScreen
 import ru.practicum.android.diploma.ui.theme.AppTheme
 
 class FavoritesFragment : Fragment() {
+    private val viewModel: FavoritesViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,9 +26,23 @@ class FavoritesFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme {
-                    FavoritesScreen()
+                    val state = viewModel.state.collectAsStateWithLifecycle()
+                    FavoritesScreen(
+                        state = state.value,
+                        onVacancyClick = { vacancyId ->
+                            findNavController().navigate(
+                                FavoritesFragmentDirections
+                                    .actionFavoritesFragmentToVacancyFragment(vacancyId)
+                            )
+                        }
+                    )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshData()
     }
 }

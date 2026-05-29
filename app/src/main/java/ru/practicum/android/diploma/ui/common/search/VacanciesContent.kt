@@ -17,7 +17,8 @@ import ru.practicum.android.diploma.ui.mocks.MocData
 import ru.practicum.android.diploma.ui.theme.AppTheme
 
 @Composable
-fun VacanciesContent(
+fun
+    VacanciesContent(
     modifier: Modifier = Modifier,
     vacancies: List<Vacancy>,
     vacancyAmount: Int,
