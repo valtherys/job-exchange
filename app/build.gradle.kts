@@ -72,7 +72,6 @@ dependencies {
     implementation(libs.coil.svg)
     implementation(libs.compose.ui)
     implementation(libs.androidx.viewmodel)
-    implementation(libs.androidx.ui.test.junit4)
 
     testImplementation(libs.junit4)
     testImplementation(libs.coroutines.test)
