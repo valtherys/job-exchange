@@ -40,7 +40,7 @@ class PlaceOfWorkFragment : Fragment() {
                         state = state,
                         onApplyClick = { applyParams(state) },
                         onBackClick = { navigateUp() },
-                        onCountyClick = { navigateCountry() },
+                        onCountryClick = { navigateCountry() },
                         onRegionClick = { navigateRegion(state) }
                     )
                 }
