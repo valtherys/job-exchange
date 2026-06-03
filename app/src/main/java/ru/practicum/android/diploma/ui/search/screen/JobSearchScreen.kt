@@ -45,6 +45,7 @@ import ru.practicum.android.diploma.ui.theme.Dimens
 fun JobSearchScreen(
     state: JobSearchState,
     searchQuery: String,
+    hasActiveFilter : Boolean,
     onVacancyClick: (String) -> Unit,
     onSearchTextChange: (String) -> Unit,
     onClear: () -> Unit,
