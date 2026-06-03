@@ -45,11 +45,17 @@ class JobSearchFragment : Fragment() {
                         },
                         onClear = { viewModel.clearSearch() },
                         onLoadNextPage = { viewModel.loadNextPage() },
+                        onFilterClick = {},
                         onNetworkError = { showToast(context.getString(R.string.network_error_toast)) }
                     )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateActiveFilters()
     }
 
     fun showToast(message: String?) {

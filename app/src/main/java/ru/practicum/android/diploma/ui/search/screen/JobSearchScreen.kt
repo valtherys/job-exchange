@@ -35,6 +35,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.presentation.search.state.JobSearchState
 import ru.practicum.android.diploma.ui.common.BadgeItem
 import ru.practicum.android.diploma.ui.common.IconImage
+import ru.practicum.android.diploma.ui.common.IconResource
 import ru.practicum.android.diploma.ui.common.PlaceholderLayout
 import ru.practicum.android.diploma.ui.common.TopBar
 import ru.practicum.android.diploma.ui.common.search.VacanciesContent
@@ -45,12 +46,13 @@ import ru.practicum.android.diploma.ui.theme.Dimens
 fun JobSearchScreen(
     state: JobSearchState,
     searchQuery: String,
-    hasActiveFilter : Boolean,
+    hasActiveFilter: Boolean,
     onVacancyClick: (String) -> Unit,
     onSearchTextChange: (String) -> Unit,
     onClear: () -> Unit,
     onLoadNextPage: () -> Unit,
-    onNetworkError: () -> Unit
+    onNetworkError: () -> Unit,
+    onFilterClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -62,7 +64,11 @@ fun JobSearchScreen(
                 text = stringResource(R.string.search_screen_title),
                 navIconVisible = false,
                 endFirstIconVisible = true,
-                endFirstIconId = R.drawable.ic_filter,
+                endFirstIcon = IconResource.FilterIcon(
+                    isActive = hasActiveFilter,
+                    onClick = onFilterClick,
+                    defaultColor = MaterialTheme.colorScheme.onBackground
+                ),
                 endSecondIconVisible = false
             )
         },
@@ -153,8 +159,15 @@ private fun SearchQueryField(
                 .testTag(SearchScreenTestTags.ClearButton)
                 .padding(end = 4.dp)
                 .clickable(enabled = true, onClick = onClear),
-            resId = if (searchQuery.isEmpty()) R.drawable.ic_search else R.drawable.ic_cross,
-            color = MaterialTheme.colorScheme.secondaryFixed
+            icon = IconResource.DefaultIcon(
+                resId = if (searchQuery.isEmpty()) {
+                    R.drawable.ic_search
+                } else R.drawable.ic_cross,
+                contentDescriptionStringId = if (searchQuery.isEmpty()) {
+                    R.string.search_description
+                } else R.string.search_clear_description,
+                color = MaterialTheme.colorScheme.secondaryFixed
+            )
         )
     }
 }
