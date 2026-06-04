@@ -21,9 +21,9 @@ class AreasStorage(
     fun getArea(id: Int): FilterArea? {
         val json = sharedPreferences.getString(AREAS_KEY, null) ?: return null
         return runCatching {
-            val type = object : TypeToken<Map<String, FilterArea>>() {}.type
-            val map: Map<String, FilterArea> = gson.fromJson(json, type)
-            map[id.toString()]
+            val type = object : TypeToken<Map<Int, FilterArea>>() {}.type
+            val map: Map<Int, FilterArea> = gson.fromJson(json, type)
+            map[id]
         }.getOrNull()
     }
 
@@ -33,10 +33,10 @@ class AreasStorage(
     }
 }
 
-private fun List<FilterArea>.toFlatMap(): Map<String, FilterArea> {
-    val result = mutableMapOf<String, FilterArea>()
+private fun List<FilterArea>.toFlatMap(): Map<Int, FilterArea> {
+    val result = mutableMapOf<Int, FilterArea>()
     fun put(area: FilterArea) {
-        result[area.id.toString()] = area
+        result[area.id] = area
         area.areas.forEach { put(it) }
     }
     forEach { put(it) }
