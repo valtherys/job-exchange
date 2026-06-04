@@ -1,35 +1,31 @@
 package ru.practicum.android.diploma.data.storage
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.domain.models.FilterArea
+import java.io.File
 
 class AreasStorage(
-    private val sharedPreferences: SharedPreferences,
+    private val areasFile: File,
     private val gson: Gson,
 ) {
 
     fun saveAreas(areas: List<FilterArea>) {
         val map = areas.toFlatMap()
-        sharedPreferences.edit {
-            putString(AREAS_KEY, gson.toJson(map))
-        }
+        areasFile.writeText(gson.toJson(map))
     }
 
     fun getArea(id: Int): FilterArea? {
-        val json = sharedPreferences.getString(AREAS_KEY, null) ?: return null
+        if (!areasFile.exists()) return null
         return runCatching {
             val type = object : TypeToken<Map<Int, FilterArea>>() {}.type
-            val map: Map<Int, FilterArea> = gson.fromJson(json, type)
+            val map: Map<Int, FilterArea> = gson.fromJson(areasFile.readText(), type)
             map[id]
         }.getOrNull()
     }
 
     companion object {
-        const val PREFS_NAME = "areas_prefs"
-        private const val AREAS_KEY = "areas_parameters"
+        const val AREAS_FILE_NAME = "areas.json"
     }
 }
 
