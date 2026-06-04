@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.presentation.favorites.viewmodel.FavoritesVi
 import ru.practicum.android.diploma.presentation.filtration.region.viewmodel.ChooseRegionViewModel
 import ru.practicum.android.diploma.presentation.filtration.industry.viewmodel.IndustryViewModel
 import ru.practicum.android.diploma.presentation.filtration.viewmodel.FiltrationViewModel
+import ru.practicum.android.diploma.presentation.filtration.workplace.viewmodel.PlaceOfWorkViewModel
 import ru.practicum.android.diploma.presentation.search.viewmodel.JobSearchViewModel
 import ru.practicum.android.diploma.presentation.vacancy.viewmodel.VacancyViewModel
 
@@ -14,6 +15,7 @@ val viewModelModule = module {
     viewModelOf(::VacancyViewModel)
     viewModelOf(::FavoritesViewModel)
     viewModelOf(::FiltrationViewModel)
+    viewModelOf(::PlaceOfWorkViewModel)
     viewModelOf(::ChooseRegionViewModel)
     viewModelOf(::IndustryViewModel)
 }
