@@ -12,9 +12,9 @@ import ru.practicum.android.diploma.presentation.filtration.workplace.state.Plac
 class PlaceOfWorkViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val countryIdFlow = savedStateHandle.getStateFlow(COUNTRY_ID_KEY, -1)
+    private val countryIdFlow = savedStateHandle.getStateFlow(COUNTRY_ID_KEY, ID_IS_ABSENT)
     private val countryNameFlow = savedStateHandle.getStateFlow(COUNTRY_NAME_KEY, "")
-    private val regionIdFlow = savedStateHandle.getStateFlow(REGION_ID_KEY, -1)
+    private val regionIdFlow = savedStateHandle.getStateFlow(REGION_ID_KEY, ID_IS_ABSENT)
     private val regionNameFlow = savedStateHandle.getStateFlow(REGION_NAME_KEY, "")
     val state = combine(
         countryIdFlow,
