@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.data.db.dao.FavoriteVacancyDao
 import ru.practicum.android.diploma.data.network.ApiService
 import ru.practicum.android.diploma.data.network.AuthInterceptor
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.data.storage.FiltrationStorage
 import ru.practicum.android.diploma.domain.api.UserDataRepository
 
@@ -62,6 +63,16 @@ val dataModule = module {
         FiltrationStorage(
             sharedPreferences = androidContext().getSharedPreferences(
                 FiltrationStorage.PREFS_NAME,
+                Context.MODE_PRIVATE,
+            ),
+            gson = get(),
+        )
+    }
+
+    single {
+        AreasStorage(
+            sharedPreferences = androidContext().getSharedPreferences(
+                AreasStorage.PREFS_NAME,
                 Context.MODE_PRIVATE,
             ),
             gson = get(),
