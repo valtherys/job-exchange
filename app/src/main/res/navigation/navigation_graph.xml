@@ -80,11 +80,11 @@
     <fragment
         android:id="@+id/chooseRegionFragment"
         android:name="ru.practicum.android.diploma.ui.filtration.region.fragment.ChooseRegionFragment"
-        android:label="fragment_choose_region">
+        android:label="fragment_choose_region" >
         <argument
             android:name="countryId"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/vacancyFragment"
