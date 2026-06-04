@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 
     id("ru.practicum.android.diploma.plugins.developproperties")
 }

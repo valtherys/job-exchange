@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.presentation.filtration.workplace.state
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class PlaceOfWorkUIState(
     val country: AreaUi? = null,
     val region: AreaUi? = null
@@ -8,4 +11,5 @@ data class PlaceOfWorkUIState(
         get() = country != null || region != null
 }
 
-data class AreaUi(val id: Int, val name: String)
+@Parcelize
+data class AreaUi(val id: Int, val name: String) : Parcelable

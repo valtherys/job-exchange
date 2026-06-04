@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.filtration.state
 
-import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 
 data class FiltrationUIState(

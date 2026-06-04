@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -33,14 +34,14 @@ class PlaceOfWorkFragment : Fragment() {
 
             setContent {
                 AppTheme {
-                    val state = viewModel.state.collectAsStateWithLifecycle()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
                     PlaceOfWorkScreen(
                         modifier = Modifier.fillMaxSize(),
-                        state = state.value,
-                        onApplyClick = { applyParams(state.value) },
+                        state = state,
+                        onApplyClick = { applyParams(state) },
                         onBackClick = { navigateUp() },
                         onCountyClick = { navigateCountry() },
-                        onRegionClick = { navigateRegion(state.value) }
+                        onRegionClick = { navigateRegion(state) }
                     )
                 }
             }
@@ -75,7 +76,7 @@ class PlaceOfWorkFragment : Fragment() {
         navController
             .previousBackStackEntry
             ?.savedStateHandle
-            ?.set(FILTERS_KEY, filters)
+            ?.set(FILTERS_KEY, filters) ?: return
     }
 
     private companion object {
