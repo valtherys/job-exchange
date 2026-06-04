@@ -4,6 +4,7 @@ import ru.practicum.android.diploma.data.dto.AreasRequest
 import ru.practicum.android.diploma.data.dto.FilterAreaDto
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.FilterArea
 
 class AreaRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -19,11 +20,20 @@ class AreaRepositoryImpl(
                 if (data == null) {
                     AreaResult.Empty
                 } else {
+                    saveAreas()
                     AreaResult.Success(data.toDomain())
                 }
             }
             else -> AreaResult.Error
         }
+    }
+
+    override suspend fun getAreaById(id: Int): FilterArea? {
+
+    }
+
+    private fun saveAreas() {
+        //Map<Int, FilterArea>
     }
 
     private companion object {
