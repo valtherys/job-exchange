@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.FiltrationInteractor
@@ -15,7 +14,6 @@ import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.IndustryResult
 import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenUiState
 import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenState
-import ru.practicum.android.diploma.presentation.filtration.state.FiltrationUIState
 
 class IndustryViewModel(
     private val industryInteractor: IndustryInteractor,
@@ -33,7 +31,7 @@ class IndustryViewModel(
     fun loadIndustry() {
         viewModelScope.launch(Dispatchers.IO) {
             val filters = filtrationInteractor.getFilter()
-            if (filters.industryId !=null && filters.industryName != null) {
+            if (filters.industryId !=null && filters.industryName != null ) {
                 publishState(selectedIndustry = FilterIndustry(filters.industryId, filters.industryName))
             }
         }

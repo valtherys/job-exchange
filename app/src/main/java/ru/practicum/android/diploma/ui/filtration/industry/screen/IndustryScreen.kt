@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.filtration.industry.screen
 
-import android.util.Log
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -125,7 +124,6 @@ private fun IndustrySearchStateContent(
     state: IndustryScreenUiState,
     onClick: (FilterIndustry) -> Unit,
 ) {
-    Log.e("?????",state.selectedIndustry?.name.orEmpty())
     when (val status = state.status) {
         is IndustryScreenState.Content -> IndustriesContent(
             modifier = Modifier
