@@ -38,7 +38,7 @@ class PlaceOfWorkViewModel(
         )
     }.stateIn(scope = viewModelScope, started = SharingStarted.Lazily, initialValue = PlaceOfWorkUIState())
 
-    private companion object {
+    companion object {
         const val ID_IS_ABSENT = -1
         const val COUNTRY_ID_KEY = "countryId"
         const val COUNTRY_NAME_KEY = "countryName"

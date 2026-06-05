@@ -11,12 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.domain.models.FilterArea
+import ru.practicum.android.diploma.presentation.filtration.country.mapper.toCountryUIList
 import ru.practicum.android.diploma.presentation.filtration.country.state.ChooseCountryUIState
 import ru.practicum.android.diploma.ui.common.Loader
 import ru.practicum.android.diploma.ui.common.PlaceholderLayout
 import ru.practicum.android.diploma.ui.common.TopBar
 import ru.practicum.android.diploma.ui.common.filter.FilterItem
+import ru.practicum.android.diploma.ui.filtration.country.model.CountryUI
 import ru.practicum.android.diploma.ui.mocks.MocData
 import ru.practicum.android.diploma.ui.theme.AppTheme
 
@@ -24,7 +25,7 @@ import ru.practicum.android.diploma.ui.theme.AppTheme
 fun ChooseCountryScreen(
     modifier: Modifier = Modifier,
     state: ChooseCountryUIState,
-    onItemClick: () -> Unit = {},
+    onItemClick: (CountryUI) -> Unit = {},
     onBackClick: () -> Unit = {}
 ) {
     Scaffold(modifier = modifier, topBar = {
@@ -47,12 +48,12 @@ fun ChooseCountryScreen(
 }
 
 @Composable
-private fun CountriesList(modifier: Modifier = Modifier, countries: List<FilterArea>, onItemClick: () -> Unit) {
+private fun CountriesList(modifier: Modifier = Modifier, countries: List<CountryUI>, onItemClick: (CountryUI) -> Unit) {
     LazyColumn(modifier = modifier) {
         items(items = countries, key = { country -> country.id }) { country ->
             FilterItem(
                 title = country.name,
-                onItemClick = onItemClick,
+                onItemClick = { onItemClick(country) },
                 headlineContentColorInverted = true
             )
         }
@@ -69,7 +70,7 @@ private fun CountryError() {
 
 private val stateError = ChooseCountryUIState.Error
 private val stateContent = ChooseCountryUIState.Content(
-    countries = MocData.countries
+    countries = MocData.countries.toCountryUIList()
 )
 
 @Preview(showSystemUi = true)
