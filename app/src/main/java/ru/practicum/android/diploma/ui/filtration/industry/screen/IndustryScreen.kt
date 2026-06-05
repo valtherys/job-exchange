@@ -22,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.FilterIndustry
-import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenUiState
 import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenState
+import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenUiState
 import ru.practicum.android.diploma.ui.common.Loader
 import ru.practicum.android.diploma.ui.common.PlaceholderLayout
 import ru.practicum.android.diploma.ui.common.PrimaryButton
