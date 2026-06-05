@@ -31,7 +31,7 @@ class IndustryViewModel(
     fun loadIndustry() {
         viewModelScope.launch(Dispatchers.IO) {
             val filters = filtrationInteractor.getFilter()
-            if (filters.industryId !=null && filters.industryName != null ) {
+            if (filters.industryId != null && filters.industryName != null ) {
                 publishState(selectedIndustry = FilterIndustry(filters.industryId, filters.industryName))
             }
         }
