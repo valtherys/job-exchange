@@ -76,12 +76,7 @@
     <fragment
         android:id="@+id/chooseRegionFragment"
         android:name="ru.practicum.android.diploma.ui.filtration.region.fragment.ChooseRegionFragment"
-        android:label="fragment_choose_region">
-        <argument
-            android:name="countryId"
-            android:defaultValue="-1"
-            app:argType="integer" />
-    </fragment>
+        android:label="fragment_choose_region" />
     <fragment
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.ui.vacancy.fragment.VacancyFragment"
