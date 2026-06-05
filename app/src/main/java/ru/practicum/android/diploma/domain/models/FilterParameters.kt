@@ -5,5 +5,8 @@ data class FilterParameters(
     val hideWithoutSalary: Boolean = false,
     val industryId: Int? = null,
     val industryName: String? = null,
-    val area: Int? = null
+    val countryId: Int? = null,
+    val countryName: String? = null,
+    val regionId: Int? = null,
+    val regionName: String? = null
 )

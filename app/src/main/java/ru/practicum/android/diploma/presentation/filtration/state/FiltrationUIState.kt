@@ -5,8 +5,9 @@ import ru.practicum.android.diploma.domain.models.FilterIndustry
 data class FiltrationUIState(
     val salary: Int?,
     val onlyWithSalary: Boolean = false,
-    val industry: FilterIndustry?
+    val industry: FilterIndustry?,
+    val area: PlaceOfWorkFilters?
 ) {
     val showButtons: Boolean
-        get() = salary != null || onlyWithSalary || industry != null
+        get() = salary != null || onlyWithSalary || industry != null || area != null
 }

@@ -24,6 +24,8 @@ class FiltrationInteractorImpl(
         val filterParameters = filtrationRepository.getFilter()
         return filterParameters.salary != null ||
             filterParameters.hideWithoutSalary ||
-            filterParameters.industryId != null
+            filterParameters.industryId != null ||
+            filterParameters.countryId != null ||
+            filterParameters.regionId != null
     }
 }

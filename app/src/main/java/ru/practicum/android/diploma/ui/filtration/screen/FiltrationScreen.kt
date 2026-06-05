@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.presentation.filtration.state.PlaceOfWorkFilters
 import ru.practicum.android.diploma.ui.common.CheckBox
 import ru.practicum.android.diploma.ui.common.PrimaryButton
 import ru.practicum.android.diploma.ui.common.SecondaryButton
@@ -48,6 +49,7 @@ fun FiltrationScreen(
     country: String,
     industryName: String?,
     salary: String,
+    placeOfWork: PlaceOfWorkFilters?,
     dontShowWithoutSalaryChecked: Boolean,
     showButtons: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -63,6 +65,14 @@ fun FiltrationScreen(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val interactionSource = remember { MutableInteractionSource() }
+    val placeOfWorkText = remember(placeOfWork) {
+        listOfNotNull(
+            placeOfWork?.country?.name,
+            placeOfWork?.region?.name
+        )
+            .takeIf { it.isNotEmpty() }
+            ?.joinToString(", ")
+    }
 
     Scaffold(
         topBar = {
@@ -91,7 +101,7 @@ fun FiltrationScreen(
             FilterItem(
                 modifier = Modifier.padding(top = 16.dp),
                 title = stringResource(R.string.filter_settings_country_title),
-                value = country.takeIf { it.isNotEmpty() },
+                value = placeOfWorkText,
                 onItemClick = onAreaClick,
                 onCrossClick = onAreaClear,
             )

@@ -15,11 +15,16 @@ class VacanciesRepositoryImpl(
         page: Int,
         filterParameters: FilterParameters
     ): SearchVacanciesOutcome {
+        val area = when {
+            filterParameters.regionId != null -> filterParameters.regionId
+            filterParameters.countryId != null -> filterParameters.countryId
+            else -> null
+        }
         val response = networkClient.doRequest(
             VacanciesRequest(
                 searchText = searchText,
                 page = page,
-                area = filterParameters.area,
+                area = area,
                 industry = filterParameters.industryId,
                 salary = filterParameters.salary,
                 onlyWithSalary = filterParameters.hideWithoutSalary
