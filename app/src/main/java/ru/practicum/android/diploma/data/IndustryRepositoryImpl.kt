@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data
 import ru.practicum.android.diploma.data.dto.FilterIndustryDto
 import ru.practicum.android.diploma.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.domain.api.IndustryRepository
-import ru.practicum.android.diploma.domain.models.IndustryResult
+import ru.practicum.android.diploma.domain.models.IndustryOutcome
 
 class IndustryRepositoryImpl(
     private val networkClient: NetworkClient,
