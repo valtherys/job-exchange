@@ -12,8 +12,8 @@ import ru.practicum.android.diploma.domain.api.FiltrationInteractor
 import ru.practicum.android.diploma.domain.api.IndustryInteractor
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.IndustryResult
-import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenUiState
 import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenState
+import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenUiState
 
 class IndustryViewModel(
     private val industryInteractor: IndustryInteractor,
@@ -61,10 +61,11 @@ class IndustryViewModel(
                     allIndustries = outcome.industries
                     publishState(status = IndustryScreenState.Content(isLoading = false))
                 }
+
                 is IndustryResult.Error,
                 is IndustryResult.NoInternet,
                 is IndustryResult.ServerError,
-                -> publishState(status = IndustryScreenState.Error)
+                    -> publishState(status = IndustryScreenState.Error)
             }
         }
     }

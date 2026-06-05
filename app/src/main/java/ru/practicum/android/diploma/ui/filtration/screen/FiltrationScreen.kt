@@ -34,12 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.ui.common.CheckBox
-import ru.practicum.android.diploma.ui.common.filter.FilterItem
 import ru.practicum.android.diploma.ui.common.PrimaryButton
 import ru.practicum.android.diploma.ui.common.SecondaryButton
 import ru.practicum.android.diploma.ui.common.TextEdit
 import ru.practicum.android.diploma.ui.common.TextEditTrailingIcon
 import ru.practicum.android.diploma.ui.common.TopBar
+import ru.practicum.android.diploma.ui.common.filter.FilterItem
 import ru.practicum.android.diploma.ui.search.screen.SearchScreenTestTags
 import ru.practicum.android.diploma.ui.theme.Dimens
 
@@ -150,7 +150,8 @@ fun DontShowWithoutSalary(
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .align(Alignment.CenterVertically),
             text = stringResource(R.string.do_not_show_without_salary_title),
             style = MaterialTheme.typography.titleMedium
