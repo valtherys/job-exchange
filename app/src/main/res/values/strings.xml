@@ -89,4 +89,10 @@
     <string name="choose_region_search_hint">Введите регион</string>
     <string name="choose_region_not_found">Такого региона нет</string>
     <string name="choose_region_error">Не удалось получить\nсписок</string>
+
+    <!-- Экран места работы-->
+    <string name="place_of_work">Выбор места работы</string>
+    <string name="place_of_work_country">Страна</string>
+    <string name="place_of_work_region">Регион</string>
+    <string name="place_of_work_apply">Применить</string>
 </resources>

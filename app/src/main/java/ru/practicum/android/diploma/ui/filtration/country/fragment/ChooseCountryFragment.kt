@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.presentation.filtration.country.state.ChooseCountryUIState
-import ru.practicum.android.diploma.presentation.filtration.workplace.viewmodel.PlaceOfWorkViewModel.Companion.COUNTRY_ID_KEY
-import ru.practicum.android.diploma.presentation.filtration.workplace.viewmodel.PlaceOfWorkViewModel.Companion.COUNTRY_NAME_KEY
+import ru.practicum.android.diploma.presentation.filtration.country.viewmodel.ChooseCountryViewModel
 import ru.practicum.android.diploma.ui.filtration.country.model.CountryUI
 import ru.practicum.android.diploma.ui.filtration.country.screen.ChooseCountryScreen
+import ru.practicum.android.diploma.ui.filtration.workplace.fragment.PlaceOfWorkFragment.Companion.COUNTRY_ID_KEY
+import ru.practicum.android.diploma.ui.filtration.workplace.fragment.PlaceOfWorkFragment.Companion.COUNTRY_NAME_KEY
 import ru.practicum.android.diploma.ui.theme.AppTheme
 
 class ChooseCountryFragment : Fragment() {
+    private val viewModel: ChooseCountryViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,8 +29,9 @@ class ChooseCountryFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            val state: ChooseCountryUIState = ChooseCountryUIState.Loading
+
             setContent {
+                val state: ChooseCountryUIState by viewModel.state.collectAsStateWithLifecycle()
                 AppTheme {
                     ChooseCountryScreen(
                         state = state,
