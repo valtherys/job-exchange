@@ -46,7 +46,6 @@ class FiltrationFragment : Fragment() {
                     val state by viewModel.state.collectAsStateWithLifecycle()
 
                     FiltrationScreen(
-                        country = "",
                         industryName = state.industry?.name,
                         salary = state.salary?.toString().orEmpty(),
                         dontShowWithoutSalaryChecked = state.onlyWithSalary,

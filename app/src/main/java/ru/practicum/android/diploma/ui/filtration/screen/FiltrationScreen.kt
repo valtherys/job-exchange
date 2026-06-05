@@ -46,7 +46,6 @@ import ru.practicum.android.diploma.ui.theme.Dimens
 
 @Composable
 fun FiltrationScreen(
-    country: String,
     industryName: String?,
     salary: String,
     placeOfWork: PlaceOfWorkFilters?,
