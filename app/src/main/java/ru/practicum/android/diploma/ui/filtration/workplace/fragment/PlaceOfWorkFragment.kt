@@ -10,12 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.presentation.filtration.state.PlaceOfWorkFilters
 import ru.practicum.android.diploma.presentation.filtration.workplace.state.AreaUi
@@ -64,46 +62,45 @@ class PlaceOfWorkFragment : Fragment() {
     private fun observeCountryResult() {
         val savedStateHandle =
             navController.currentBackStackEntry?.savedStateHandle ?: return
-        savedStateHandle
-            .getStateFlow(COUNTRY_ID_KEY, ID_IS_ABSENT)
-            .onEach { countryId ->
-                if (countryId != ID_IS_ABSENT) {
-                    val countryName = savedStateHandle.get<String>(COUNTRY_NAME_KEY).orEmpty()
-                    viewModel.onCountrySelected(AreaUi(id = countryId, name = countryName))
-                }
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        val countryId = savedStateHandle.get<Int>(COUNTRY_ID_KEY)
+        val countryName = savedStateHandle.get<String>(COUNTRY_NAME_KEY).orEmpty()
+
+        if (countryId != ID_IS_ABSENT && countryId != null) {
+            viewModel.onCountrySelected(AreaUi(id = countryId, name = countryName))
+            clearCountryResult(savedStateHandle)
+        }
     }
 
     private fun observeRegionResult() {
         val savedStateHandle =
             navController.currentBackStackEntry?.savedStateHandle ?: return
-        savedStateHandle
-            .getStateFlow(REGION_ID_KEY, ID_IS_ABSENT)
-            .onEach { regionId ->
-                if (regionId != ID_IS_ABSENT) {
-                    val countryName = savedStateHandle.get<String>(REGION_NAME_KEY).orEmpty()
-                    viewModel.onRegionSelected(AreaUi(id = regionId, name = countryName))
-                }
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        val regionId = savedStateHandle.get<Int>(REGION_ID_KEY)
+        val regionName = savedStateHandle.get<String>(REGION_NAME_KEY).orEmpty()
+
+        if (regionId != ID_IS_ABSENT && regionId != null) {
+            viewModel.onRegionSelected(AreaUi(id = regionId, name = regionName))
+            clearRegionResult(savedStateHandle)
+        }
+    }
+
+    private fun clearCountryResult(handle: SavedStateHandle) {
+        handle.remove<Int>(COUNTRY_ID_KEY)
+        handle.remove<String>(COUNTRY_NAME_KEY)
+        handle.remove<Int>(REGION_ID_KEY)
+        handle.remove<String>(REGION_NAME_KEY)
+    }
+
+    private fun clearRegionResult(handle: SavedStateHandle) {
+        handle.remove<Int>(REGION_ID_KEY)
+        handle.remove<String>(REGION_NAME_KEY)
     }
 
     private fun resetCountry() {
-        val savedStateHandle =
-            navController.currentBackStackEntry?.savedStateHandle ?: return
-        savedStateHandle[COUNTRY_ID_KEY] = -1
-        savedStateHandle[COUNTRY_NAME_KEY] = ""
-
         viewModel.onDeleteCounty()
     }
 
     private fun resetRegion() {
-        val savedStateHandle =
-            navController.currentBackStackEntry?.savedStateHandle ?: return
-        savedStateHandle[REGION_ID_KEY] = -1
-        savedStateHandle[REGION_NAME_KEY] = ""
-
         viewModel.onDeleteRegion()
     }
 
