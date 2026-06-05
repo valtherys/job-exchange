@@ -38,13 +38,13 @@ fun PlaceOfWorkScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             FilterItem(
                 title = stringResource(R.string.place_of_work_country),
-                value = null,
+                value = state.country?.name,
                 onItemClick = onCountryClick,
                 onCrossClick = onCountryCrossClick,
             )
             FilterItem(
                 title = stringResource(R.string.place_of_work_region),
-                value = null,
+                value = state.region?.name,
                 onItemClick = onRegionClick,
                 onCrossClick = onRegionCrossClick,
             )
