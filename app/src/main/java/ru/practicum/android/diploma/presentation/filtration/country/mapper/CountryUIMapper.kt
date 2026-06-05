@@ -13,4 +13,3 @@ fun FilterArea.toCountryUI(): CountryUI {
         name = name
     )
 }
-
