@@ -6,8 +6,6 @@ data class FiltrationUIState(
     val salary: Int?,
     val onlyWithSalary: Boolean = false,
     val industry: FilterIndustry?,
+    val showButtons: Boolean = false,
     val area: PlaceOfWorkFilters?
-) {
-    val showButtons: Boolean
-        get() = salary != null || onlyWithSalary || industry != null || area != null
-}
+)
