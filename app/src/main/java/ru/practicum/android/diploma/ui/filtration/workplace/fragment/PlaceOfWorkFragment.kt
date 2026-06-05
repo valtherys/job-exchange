@@ -136,7 +136,7 @@ class PlaceOfWorkFragment : Fragment() {
     }
 
     companion object {
-        const val FILTERS_KEY = "place_of_work_filters"
+        const val FILTERS_KEY = "placeOfWorkFilters"
         const val ID_IS_ABSENT = -1
         const val COUNTRY_ID_KEY = "countryId"
         const val COUNTRY_NAME_KEY = "countryName"

@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.presentation.filtration.workplace.state.PlaceOfWorkUIState
 import ru.practicum.android.diploma.ui.common.FilterItem
@@ -18,7 +19,6 @@ import ru.practicum.android.diploma.ui.common.TopBar
 fun PlaceOfWorkScreen(
     modifier: Modifier = Modifier,
     state: PlaceOfWorkUIState,
-    buttonShowed: Boolean = false,
     onCountryClick: () -> Unit = {},
     onRegionClick: () -> Unit = {},
     onCountryCrossClick: () -> Unit = {},
@@ -49,8 +49,9 @@ fun PlaceOfWorkScreen(
                 onCrossClick = onRegionCrossClick,
             )
             Spacer(modifier = Modifier.weight(1F))
-            if (buttonShowed) {
+            if (state.country != null || state.region != null) {
                 PrimaryButton(
+                    modifier = Modifier.padding(bottom = 24.dp),
                     text = stringResource(R.string.place_of_work_apply),
                     onClick = onApplyClick,
                 )

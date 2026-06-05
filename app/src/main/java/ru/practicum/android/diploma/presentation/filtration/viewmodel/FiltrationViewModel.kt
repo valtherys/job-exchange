@@ -13,12 +13,15 @@ import ru.practicum.android.diploma.domain.api.FiltrationInteractor
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.FilterParameters
 import ru.practicum.android.diploma.presentation.filtration.state.FiltrationUIState
+import ru.practicum.android.diploma.presentation.filtration.state.PlaceOfWorkFilters
+import ru.practicum.android.diploma.presentation.filtration.workplace.state.AreaUi
 
 class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor) : ViewModel() {
     private val initialState = FiltrationUIState(
         salary = null,
         onlyWithSalary = false,
         industry = null,
+        area = null
     )
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<FiltrationUIState> = _state.asStateFlow()
@@ -30,6 +33,17 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
     fun loadFilters() {
         viewModelScope.launch(Dispatchers.IO) {
             val filters = filtrationInteractor.getFilter()
+            val country = if (filters.countryId != null && filters.countryName != null) {
+                AreaUi(filters.countryId, filters.countryName)
+            } else {
+                null
+            }
+            val region = if (filters.regionId != null && filters.regionName != null) {
+                AreaUi(filters.regionId, filters.regionName)
+            } else {
+                null
+            }
+
             _state.update {
                 FiltrationUIState(
                     salary = filters.salary,
@@ -37,6 +51,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
                     industry = filters.industryId?.let { id ->
                         FilterIndustry(id = id, name = filters.industryName.orEmpty())
                     },
+                    area = PlaceOfWorkFilters(country = country, region = region)
                 )
             }
         }
@@ -50,9 +65,9 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
         }
     }
 
-    fun onSalaryChanged(salary: Int) {
-        _state.update { it.copy(salary = salary) }
-    }
+//    fun onSalaryChanged(salary: Int) {
+//        _state.update { it.copy(salary = salary) }
+//    }
 
     fun onSalaryCleared() {
         _state.update { it.copy(salary = null) }
@@ -70,6 +85,14 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
         _state.update { it.copy(industry = industry) }
     }
 
+    fun onAreaChanged(area: PlaceOfWorkFilters) {
+        _state.update { it.copy(area = PlaceOfWorkFilters(country = area.country, region = area.region)) }
+    }
+
+    fun onClearArea() {
+        _state.update { it.copy(area = null) }
+    }
+
     fun saveFilters() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -79,6 +102,10 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
                         hideWithoutSalary = _state.value.onlyWithSalary,
                         industryId = _state.value.industry?.id,
                         industryName = _state.value.industry?.name,
+                        countryId = _state.value.area?.country?.id,
+                        countryName = _state.value.area?.country?.name,
+                        regionId = _state.value.area?.region?.id,
+                        regionName = _state.value.area?.region?.name
                     ),
                 )
             }
@@ -100,6 +127,10 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
                     hideWithoutSalary = filters.onlyWithSalary,
                     industryId = filters.industry?.id,
                     industryName = filters.industry?.name,
+                    countryId = filters.area?.country?.id,
+                    countryName = filters.area?.country?.name,
+                    regionId = filters.area?.region?.id,
+                    regionName = filters.area?.region?.name
                 ),
             )
         }
