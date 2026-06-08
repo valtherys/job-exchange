@@ -1,40 +1,23 @@
 package ru.practicum.android.diploma.data.storage
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.domain.models.FilterArea
-import java.io.File
 
-class AreasStorage(
-    private val areasFile: File,
-    private val gson: Gson,
-) {
+class AreasStorage {
 
-    fun saveAreas(areas: List<FilterArea>) {
-        val map = areas.toFlatMap()
-        areasFile.writeText(gson.toJson(map))
+    private var countries: List<FilterArea>? = null
+    private var regions: List<FilterArea>? = null
+
+    fun saveAreas(items: List<FilterArea>) {
+        countries = items.filter { area -> area.parentId == null }
+        regions = items.flatMap { country -> country.flattenRegions() }
     }
 
-    fun getArea(id: Int): FilterArea? {
-        if (!areasFile.exists()) return null
-        return runCatching {
-            val type = object : TypeToken<Map<Int, FilterArea>>() {}.type
-            val map: Map<Int, FilterArea> = gson.fromJson(areasFile.readText(), type)
-            map[id]
-        }.getOrNull()
-    }
+    fun getCountries(): List<FilterArea>? = countries
 
-    companion object {
-        const val AREAS_FILE_NAME = "areas.json"
-    }
-}
+    fun getRegions(): List<FilterArea>? = regions
 
-private fun List<FilterArea>.toFlatMap(): Map<Int, FilterArea> {
-    val result = mutableMapOf<Int, FilterArea>()
-    fun put(area: FilterArea) {
-        result[area.id] = area
-        area.areas.forEach { put(it) }
-    }
-    forEach { put(it) }
-    return result
+    private fun FilterArea.flattenRegions(): List<FilterArea> =
+        areas.flatMap { region ->
+            listOf(region) + region.flattenRegions()
+        }
 }

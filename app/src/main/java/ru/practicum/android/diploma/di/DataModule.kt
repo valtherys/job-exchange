@@ -71,9 +71,6 @@ val dataModule = module {
     }
 
     single {
-        AreasStorage(
-            areasFile = File(androidContext().filesDir, AreasStorage.AREAS_FILE_NAME),
-            gson = get(),
-        )
+        AreasStorage()
     }
 }

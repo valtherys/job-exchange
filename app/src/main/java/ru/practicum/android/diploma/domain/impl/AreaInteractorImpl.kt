@@ -12,7 +12,11 @@ class AreaInteractorImpl(
         return areaRepository.getAreas()
     }
 
-    override suspend fun getAreaById(id: Int): FilterArea? {
-        return areaRepository.getAreaById(id)
+    override fun getCountries(): List<FilterArea>? {
+        return areaRepository.getCountries()
+    }
+
+    override fun getRegions(): List<FilterArea>? {
+        return areaRepository.getRegions()
     }
 }

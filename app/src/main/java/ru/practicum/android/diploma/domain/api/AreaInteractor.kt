@@ -6,5 +6,7 @@ import ru.practicum.android.diploma.domain.models.FilterArea
 interface AreaInteractor {
     suspend fun getAreas(): AreaResult
 
-    suspend fun getAreaById(id: Int): FilterArea?
+    fun getCountries(): List<FilterArea>?
+
+    fun getRegions(): List<FilterArea>?
 }

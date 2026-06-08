@@ -31,8 +31,12 @@ class AreaRepositoryImpl(
         }
     }
 
-    override suspend fun getAreaById(id: Int): FilterArea? {
-        return areasStorage.getArea(id)
+    override fun getCountries(): List<FilterArea>? {
+       return areasStorage.getCountries()
+    }
+
+    override fun getRegions(): List<FilterArea>? {
+        return areasStorage.getRegions()
     }
 
     private companion object {
