@@ -37,6 +37,6 @@ val repositoryModule = module {
     }
 
     single<AreaRepository> {
-        AreaRepositoryImpl(get())
+        AreaRepositoryImpl(get(), get())
     }
 }

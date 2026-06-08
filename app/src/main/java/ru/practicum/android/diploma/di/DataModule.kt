@@ -15,8 +15,10 @@ import ru.practicum.android.diploma.data.db.dao.FavoriteVacancyDao
 import ru.practicum.android.diploma.data.network.ApiService
 import ru.practicum.android.diploma.data.network.AuthInterceptor
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.data.storage.FiltrationStorage
 import ru.practicum.android.diploma.domain.api.UserDataRepository
+import java.io.File
 
 val dataModule = module {
 
@@ -64,6 +66,13 @@ val dataModule = module {
                 FiltrationStorage.PREFS_NAME,
                 Context.MODE_PRIVATE,
             ),
+            gson = get(),
+        )
+    }
+
+    single {
+        AreasStorage(
+            areasFile = File(androidContext().filesDir, AreasStorage.AREAS_FILE_NAME),
             gson = get(),
         )
     }
