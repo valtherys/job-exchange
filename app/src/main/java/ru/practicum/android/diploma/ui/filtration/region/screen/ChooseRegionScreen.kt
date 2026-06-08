@@ -78,16 +78,16 @@ private fun ChooseRegionContent(
 }
 
 private val previewRegions = listOf(
-    RegionUi(id = 1, name = "Москва"),
-    RegionUi(id = 2, name = "Апрелевка"),
-    RegionUi(id = 3, name = "Балашиха"),
-    RegionUi(id = 4, name = "Бронницы"),
-    RegionUi(id = 5, name = "Верея"),
-    RegionUi(id = 6, name = "Видное"),
-    RegionUi(id = 7, name = "Волоколамск"),
-    RegionUi(id = 8, name = "Воскресенск"),
-    RegionUi(id = 9, name = "Высоковск"),
-    RegionUi(id = 10, name = "Голицыно"),
+    RegionUi(id = 1, name = "Москва", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 2, name = "Апрелевка", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 3, name = "Балашиха", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 4, name = "Бронницы", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 5, name = "Верея", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 6, name = "Видное", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 7, name = "Волоколамск", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 8, name = "Воскресенск", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 9, name = "Высоковск", parentId = 11, parentName = "Россия"),
+    RegionUi(id = 10, name = "Голицыно", parentId = 11, parentName = "Россия"),
 )
 
 // Figma HH--Android- node 67-4474: список регионов

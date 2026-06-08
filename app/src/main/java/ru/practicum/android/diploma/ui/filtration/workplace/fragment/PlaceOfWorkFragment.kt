@@ -63,6 +63,11 @@ class PlaceOfWorkFragment : Fragment() {
         val savedStateHandle =
             navController.currentBackStackEntry?.savedStateHandle ?: return
 
+        val regionId = savedStateHandle.get<Int>(REGION_ID_KEY)
+        if (regionId != null && regionId != ID_IS_ABSENT) {
+            return
+        }
+
         val countryId = savedStateHandle.get<Int>(COUNTRY_ID_KEY)
         val countryName = savedStateHandle.get<String>(COUNTRY_NAME_KEY).orEmpty()
 
@@ -77,9 +82,19 @@ class PlaceOfWorkFragment : Fragment() {
             navController.currentBackStackEntry?.savedStateHandle ?: return
         val regionId = savedStateHandle.get<Int>(REGION_ID_KEY)
         val regionName = savedStateHandle.get<String>(REGION_NAME_KEY).orEmpty()
+        val countryId = savedStateHandle.get<Int>(COUNTRY_ID_KEY)
+        val countryName = savedStateHandle.get<String>(COUNTRY_NAME_KEY).orEmpty()
 
         if (regionId != ID_IS_ABSENT && regionId != null) {
-            viewModel.onRegionSelected(AreaUi(id = regionId, name = regionName))
+            val country = if (countryId != null && countryId != ID_IS_ABSENT) {
+                AreaUi(id = countryId, name = countryName)
+            } else {
+                null
+            }
+            viewModel.onRegionSelected(
+                region = AreaUi(id = regionId, name = regionName),
+                country = country,
+            )
             clearRegionResult(savedStateHandle)
         }
     }
@@ -87,13 +102,13 @@ class PlaceOfWorkFragment : Fragment() {
     private fun clearCountryResult(handle: SavedStateHandle) {
         handle.remove<Int>(COUNTRY_ID_KEY)
         handle.remove<String>(COUNTRY_NAME_KEY)
-        handle.remove<Int>(REGION_ID_KEY)
-        handle.remove<String>(REGION_NAME_KEY)
     }
 
     private fun clearRegionResult(handle: SavedStateHandle) {
         handle.remove<Int>(REGION_ID_KEY)
         handle.remove<String>(REGION_NAME_KEY)
+        handle.remove<Int>(COUNTRY_ID_KEY)
+        handle.remove<String>(COUNTRY_NAME_KEY)
     }
 
     private fun resetCountry() {

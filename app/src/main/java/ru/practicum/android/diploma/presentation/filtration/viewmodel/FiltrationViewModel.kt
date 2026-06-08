@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.filtration.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
     fun loadFilters() {
         viewModelScope.launch(Dispatchers.IO) {
             val filters = filtrationInteractor.getFilter()
+            Log.e(">>>>>", filters.toString())
             savedFilterParameters = filters
             setState(filters.toUiState())
         }
@@ -70,16 +72,19 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
     }
 
     fun onAreaChanged(area: PlaceOfWorkFilters) {
+        Log.e(">>>>>", "${area.country?.name} ${area.region?.name}" )
         _state.update { it.copy(area = PlaceOfWorkFilters(country = area.country, region = area.region)) }
     }
 
     fun onClearArea() {
+        Log.e(">>>>>", "area cleared" )
         _state.update { it.copy(area = null) }
     }
 
     fun saveFilters() {
         viewModelScope.launch {
             val filterParameters = _state.value.toFilterParameters()
+            Log.e(">>>>>", "filters saved: $filterParameters" )
             withContext(Dispatchers.IO) {
                 filtrationInteractor.saveFilter(filterParameters)
             }
@@ -89,6 +94,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
     }
 
     fun resetFilters() {
+        Log.e(">>>>>", "filters reset" )
         viewModelScope.launch(Dispatchers.IO) {
             filtrationInteractor.clearFilter()
             savedFilterParameters = FilterParameters()
@@ -96,9 +102,9 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
         }
     }
 
-    private fun publishState(transform: (FiltrationUIState) -> FiltrationUIState) {
-        _state.update { currentState ->
+    private fun publishState(transform: (FiltrationUIState) -> FiltrationUIState) { _state.update { currentState ->
             val newState = transform(currentState)
+        Log.e(">>>>>", "state published: $newState" )
             newState.copy(showButtons = shouldShowButtons(newState))
         }
     }
@@ -109,6 +115,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
 
     private fun shouldShowButtons(state: FiltrationUIState): Boolean {
         val hasActiveFilters = state.salary != null || state.onlyWithSalary || state.industry != null
+            || state.area !=null
         return hasActiveFilters || state.toFilterParameters() != savedFilterParameters
     }
 
@@ -131,6 +138,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
         }
         val region = if (regionId != null && regionName != null) {
             AreaUi(regionId, regionName)
+            // вот тут надо и страну показывать тоже
         } else {
             null
         }

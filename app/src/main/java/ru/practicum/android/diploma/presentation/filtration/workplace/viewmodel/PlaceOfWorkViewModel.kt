@@ -22,8 +22,9 @@ class PlaceOfWorkViewModel : ViewModel() {
         regionFlow.value = null
     }
 
-    fun onRegionSelected(region: AreaUi) {
+    fun onRegionSelected(region: AreaUi, country: AreaUi?) {
         regionFlow.value = region
+        countryFlow.value = country
     }
 
     fun onDeleteCounty() {

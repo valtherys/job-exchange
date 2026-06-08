@@ -87,6 +87,7 @@ class FiltrationFragment : Fragment() {
 
         if (placeOfWorkFilters != null) {
             viewModel.onAreaChanged(placeOfWorkFilters)
+            savedStateHandle.remove<PlaceOfWorkFilters>(FILTERS_KEY)
         }
     }
 

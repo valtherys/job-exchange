@@ -14,6 +14,8 @@ import ru.practicum.android.diploma.presentation.filtration.region.viewmodel.Cho
 import ru.practicum.android.diploma.ui.filtration.region.action.ChooseRegionAction
 import ru.practicum.android.diploma.ui.filtration.region.model.RegionUi
 import ru.practicum.android.diploma.ui.filtration.region.screen.ChooseRegionScreen
+import ru.practicum.android.diploma.ui.filtration.workplace.fragment.PlaceOfWorkFragment.Companion.COUNTRY_ID_KEY
+import ru.practicum.android.diploma.ui.filtration.workplace.fragment.PlaceOfWorkFragment.Companion.COUNTRY_NAME_KEY
 import ru.practicum.android.diploma.ui.theme.AppTheme
 
 class ChooseRegionFragment : Fragment() {
@@ -69,6 +71,16 @@ class ChooseRegionFragment : Fragment() {
             .previousBackStackEntry
             ?.savedStateHandle
             ?.set(REGION_NAME_KEY, region.name)
+
+        findNavController()
+            .previousBackStackEntry
+            ?.savedStateHandle
+            ?.set(COUNTRY_ID_KEY, region.parentId)
+
+        findNavController()
+            .previousBackStackEntry
+            ?.savedStateHandle
+            ?.set(COUNTRY_NAME_KEY, region.parentName)
     }
 
     private companion object {

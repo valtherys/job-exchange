@@ -30,6 +30,6 @@ private fun List<FilterArea>.findAreaById(id: Int): FilterArea? {
 
 private fun FilterArea.flattenChildrenToRegionUi(): List<RegionUi> {
     return areas.flatMap { child ->
-        listOf(RegionUi(id = child.id, name = child.name)) + child.flattenChildrenToRegionUi()
+        listOf(RegionUi(id = child.id, name = child.name, parentId = this.id, parentName = this.name)) + child.flattenChildrenToRegionUi()
     }
 }
