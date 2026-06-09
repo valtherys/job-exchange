@@ -109,6 +109,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
 
     private fun shouldShowButtons(state: FiltrationUIState): Boolean {
         val hasActiveFilters = state.salary != null || state.onlyWithSalary || state.industry != null
+            || state.area != null
         return hasActiveFilters || state.toFilterParameters() != savedFilterParameters
     }
 
