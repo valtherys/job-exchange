@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.AreaInteractor
+import ru.practicum.android.diploma.domain.api.area.AreaInteractor
 import ru.practicum.android.diploma.domain.models.CountriesResult
 import ru.practicum.android.diploma.presentation.filtration.country.mapper.toCountryUIList
 import ru.practicum.android.diploma.presentation.filtration.country.state.ChooseCountryUIState

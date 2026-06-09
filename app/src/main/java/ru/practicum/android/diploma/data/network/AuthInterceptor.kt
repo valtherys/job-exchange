@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data.network
 import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
-import ru.practicum.android.diploma.domain.api.UserDataRepository
+import ru.practicum.android.diploma.domain.api.network.UserDataRepository
 
 class AuthInterceptor(private val userDataRepository: UserDataRepository) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
