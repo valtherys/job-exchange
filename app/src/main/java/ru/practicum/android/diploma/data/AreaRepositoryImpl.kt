@@ -2,11 +2,14 @@ package ru.practicum.android.diploma.data
 
 import ru.practicum.android.diploma.data.dto.AreasRequest
 import ru.practicum.android.diploma.data.dto.FilterAreaDto
+import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.FilterArea
 
 class AreaRepositoryImpl(
     private val networkClient: NetworkClient,
+    private val areasStorage: AreasStorage,
 ) : AreaRepository {
 
     override suspend fun getAreas(): AreaResult {
@@ -19,11 +22,29 @@ class AreaRepositoryImpl(
                 if (data == null) {
                     AreaResult.Empty
                 } else {
-                    AreaResult.Success(data.toDomain())
+                    val areas = data.toDomain()
+                    areasStorage.saveAreas(areas)
+                    AreaResult.Success(areas)
                 }
             }
             else -> AreaResult.Error
         }
+    }
+
+    override fun getCountries(): List<FilterArea>? {
+        return areasStorage.getCountries()
+    }
+
+    override fun getRegions(): List<FilterArea>? {
+        return areasStorage.getRegions()
+    }
+
+    override fun getParentByRegionId(id: Int): FilterArea? {
+        return areasStorage.getParentByRegionId(id)
+    }
+
+    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
+        return areasStorage.getRegionsByCountryId(id)
     }
 
     private companion object {

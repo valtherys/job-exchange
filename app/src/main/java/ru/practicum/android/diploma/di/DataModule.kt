@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.data.db.dao.FavoriteVacancyDao
 import ru.practicum.android.diploma.data.network.ApiService
 import ru.practicum.android.diploma.data.network.AuthInterceptor
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.data.storage.FiltrationStorage
 import ru.practicum.android.diploma.domain.api.UserDataRepository
 
@@ -66,5 +67,9 @@ val dataModule = module {
             ),
             gson = get(),
         )
+    }
+
+    single {
+        AreasStorage()
     }
 }
