@@ -9,4 +9,8 @@ interface AreaRepository {
     fun getCountries(): List<FilterArea>?
 
     fun getRegions(): List<FilterArea>?
+
+    fun getCountryById(id: Int) : FilterArea?
+
+    fun getRegionById(id: Int) : FilterArea?
 }

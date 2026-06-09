@@ -39,6 +39,14 @@ class AreaRepositoryImpl(
         return areasStorage.getRegions()
     }
 
+    override fun getCountryById(id: Int) : FilterArea? {
+        return areasStorage.getCountryById(id)
+    }
+
+    override fun getRegionById(id: Int) : FilterArea? {
+        return areasStorage.getRegionById(id)
+    }
+
     private companion object {
         const val HTTP_OK = 200
         const val NO_INTERNET = -1
