@@ -16,11 +16,11 @@ class AreasStorage {
 
     fun getRegions(): List<FilterArea>? = regions
 
-    fun getCountryById(id: Int) : FilterArea? {
+    fun getCountryById(id: Int): FilterArea? {
         return countries?.firstOrNull { country -> country.id == id }
     }
 
-    fun getRegionById(id: Int) : FilterArea? {
+    fun getRegionById(id: Int): FilterArea? {
         return regions?.firstOrNull { region -> region.id == id }
     }
 

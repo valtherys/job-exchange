@@ -32,18 +32,18 @@ class AreaRepositoryImpl(
     }
 
     override fun getCountries(): List<FilterArea>? {
-       return areasStorage.getCountries()
+        return areasStorage.getCountries()
     }
 
     override fun getRegions(): List<FilterArea>? {
         return areasStorage.getRegions()
     }
 
-    override fun getCountryById(id: Int) : FilterArea? {
+    override fun getCountryById(id: Int): FilterArea? {
         return areasStorage.getCountryById(id)
     }
 
-    override fun getRegionById(id: Int) : FilterArea? {
+    override fun getRegionById(id: Int): FilterArea? {
         return areasStorage.getRegionById(id)
     }
 
