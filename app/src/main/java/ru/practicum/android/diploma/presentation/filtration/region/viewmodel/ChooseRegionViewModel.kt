@@ -3,11 +3,13 @@ package ru.practicum.android.diploma.presentation.filtration.region.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.AreaInteractor
 import ru.practicum.android.diploma.domain.models.AreaResult
 import ru.practicum.android.diploma.presentation.filtration.region.mapper.toRegionUiList
@@ -32,11 +34,15 @@ class ChooseRegionViewModel(
     }
 
     fun onSearchQueryChanged(query: String) {
-        publishFilteredRegions(query)
+        viewModelScope.launch {
+            publishFilteredRegions(query)
+        }
     }
 
     fun onClearSearchClicked() {
-        publishFilteredRegions(searchQuery = "")
+        viewModelScope.launch {
+            publishFilteredRegions(searchQuery = "")
+        }
     }
 
     private fun loadRegions() {
@@ -48,9 +54,12 @@ class ChooseRegionViewModel(
                     isEmptySearchResult = false,
                 )
             }
-            when (val result = areaInteractor.getAreas()) {
+            when (val result = withContext(Dispatchers.IO) { areaInteractor.getAreas() }) {
                 is AreaResult.Success -> {
-                    allRegions = result.areas.toRegionUiList(countryId)
+                    val regions = withContext(Dispatchers.Default) {
+                        result.areas.toRegionUiList(countryId)
+                    }
+                    allRegions = regions
                     publishFilteredRegions(_state.value.searchQuery)
                 }
 
@@ -71,13 +80,15 @@ class ChooseRegionViewModel(
         }
     }
 
-    private fun publishFilteredRegions(searchQuery: String) {
+    private suspend fun publishFilteredRegions(searchQuery: String) {
         val trimmedQuery = searchQuery.trim()
-        val filteredRegions = if (trimmedQuery.isEmpty()) {
-            allRegions
-        } else {
-            allRegions.filter { region ->
-                region.name.contains(trimmedQuery, ignoreCase = true)
+        val filteredRegions = withContext(Dispatchers.Default) {
+            if (trimmedQuery.isEmpty()) {
+                allRegions
+            } else {
+                allRegions.filter { region ->
+                    region.name.contains(trimmedQuery, ignoreCase = true)
+                }
             }
         }
 
