@@ -10,7 +10,7 @@ interface AreaInteractor {
 
     fun getRegions(): List<FilterArea>?
 
-    fun getCountryById(id: Int): FilterArea?
+    fun getParentByRegionId(id: Int): FilterArea?
 
-    fun getRegionById(id: Int): FilterArea?
+    fun getRegionsByCountryId(id: Int): List<FilterArea>?
 }

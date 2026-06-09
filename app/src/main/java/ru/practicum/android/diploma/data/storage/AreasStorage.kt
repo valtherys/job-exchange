@@ -16,12 +16,16 @@ class AreasStorage {
 
     fun getRegions(): List<FilterArea>? = regions
 
-    fun getCountryById(id: Int): FilterArea? {
-        return countries?.firstOrNull { country -> country.id == id }
+    fun getParentByRegionId(id: Int): FilterArea? {
+        return countries?.firstOrNull { country -> country.id ==  getRegionById(id)?.parentId }
     }
 
-    fun getRegionById(id: Int): FilterArea? {
+    private fun getRegionById(id: Int): FilterArea? {
         return regions?.firstOrNull { region -> region.id == id }
+    }
+
+    fun getRegionsByCountryId(id: Int): List<FilterArea>? {
+        return regions?.filter { region -> region.parentId == id }
     }
 
     private fun FilterArea.flattenRegions(): List<FilterArea> =

@@ -20,11 +20,11 @@ class AreaInteractorImpl(
         return areaRepository.getRegions()
     }
 
-    override fun getRegionById(id: Int): FilterArea? {
-        return areaRepository.getRegionById(id)
+    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
+        return areaRepository.getRegionsByCountryId(id)
     }
 
-    override fun getCountryById(id: Int): FilterArea? {
-        return areaRepository.getCountryById(id)
+    override fun getParentByRegionId(id: Int): FilterArea? {
+        return areaRepository.getParentByRegionId(id)
     }
 }

@@ -39,12 +39,12 @@ class AreaRepositoryImpl(
         return areasStorage.getRegions()
     }
 
-    override fun getCountryById(id: Int): FilterArea? {
-        return areasStorage.getCountryById(id)
+    override fun getParentByRegionId(id: Int): FilterArea? {
+        return areasStorage.getParentByRegionId(id)
     }
 
-    override fun getRegionById(id: Int): FilterArea? {
-        return areasStorage.getRegionById(id)
+    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
+        return areasStorage.getRegionsByCountryId(id)
     }
 
     private companion object {
