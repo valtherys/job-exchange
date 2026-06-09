@@ -87,7 +87,7 @@ class JobSearchViewModel(
 
                 is SearchVacanciesOutcome.Empty,
                 is SearchVacanciesOutcome.Error,
-                    -> stopPaginationLoading()
+                -> stopPaginationLoading()
             }
         }
     }

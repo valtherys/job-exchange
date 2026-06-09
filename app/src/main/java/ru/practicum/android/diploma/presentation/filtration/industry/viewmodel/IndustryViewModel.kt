@@ -74,7 +74,7 @@ class IndustryViewModel(
                 is IndustryResult.Error,
                 is IndustryResult.NoInternet,
                 is IndustryResult.ServerError,
-                    -> publishState(status = IndustryScreenState.Error)
+                -> publishState(status = IndustryScreenState.Error)
             }
         }
     }
