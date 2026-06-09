@@ -17,7 +17,7 @@ class AreasStorage {
     fun getRegions(): List<FilterArea>? = regions
 
     fun getParentByRegionId(id: Int): FilterArea? {
-        return countries?.firstOrNull { country -> country.id ==  getRegionById(id)?.parentId }
+        return countries?.firstOrNull { country -> country.id == getRegionById(id)?.parentId }
     }
 
     private fun getRegionById(id: Int): FilterArea? {
