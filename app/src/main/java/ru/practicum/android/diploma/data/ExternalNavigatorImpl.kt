@@ -39,6 +39,7 @@ class ExternalNavigatorImpl(
         val intent = Intent().apply {
             type = TEXT_PLAIN
             putExtra(Intent.EXTRA_TEXT, vacancyLink)
+            putExtra(Intent.EXTRA_TITLE, title)
             action = Intent.ACTION_SEND
         }
 
