@@ -34,11 +34,15 @@ class ChooseRegionViewModel(
     }
 
     fun onSearchQueryChanged(query: String) {
-        publishFilteredRegions(query)
+        viewModelScope.launch {
+            publishFilteredRegions(query)
+        }
     }
 
     fun onClearSearchClicked() {
-        publishFilteredRegions(searchQuery = "")
+        viewModelScope.launch {
+            publishFilteredRegions(searchQuery = "")
+        }
     }
 
     private fun loadRegions() {
@@ -50,40 +54,38 @@ class ChooseRegionViewModel(
                     isEmptySearchResult = false,
                 )
             }
-            when (
-                val result = withContext(Dispatchers.IO) {
-                    areaInteractor.getRegions(countryId)
-                }
-            ) {
-                is RegionsResult.Success -> {
-                    allRegions = result.regions.toRegionUiList()
-                    publishFilteredRegions(_state.value.searchQuery)
-                }
 
-                is RegionsResult.NoInternet,
-                is RegionsResult.ServerError,
-                is RegionsResult.Empty,
-                is RegionsResult.Error,
-                -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isError = true,
-                            isEmptySearchResult = false,
-                        )
-                    }
+            val loadedRegions = withContext(Dispatchers.IO) {
+                when (val result = areaInteractor.getRegions(countryId)) {
+                    is RegionsResult.Success -> result.regions.toRegionUiList()
+                    else -> null
+                }
+            }
+
+            if (loadedRegions != null) {
+                allRegions = loadedRegions
+                publishFilteredRegions(_state.value.searchQuery)
+            } else {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = true,
+                        isEmptySearchResult = false,
+                    )
                 }
             }
         }
     }
 
-    private fun publishFilteredRegions(searchQuery: String) {
+    private suspend fun publishFilteredRegions(searchQuery: String) {
         val trimmedQuery = searchQuery.trim()
-        val filteredRegions = if (trimmedQuery.isEmpty()) {
-            allRegions
-        } else {
-            allRegions.filter { region ->
-                region.name.contains(trimmedQuery, ignoreCase = true)
+        val filteredRegions = withContext(Dispatchers.Default) {
+            if (trimmedQuery.isEmpty()) {
+                allRegions
+            } else {
+                allRegions.filter { region ->
+                    region.name.contains(trimmedQuery, ignoreCase = true)
+                }
             }
         }
 

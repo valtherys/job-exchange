@@ -14,6 +14,10 @@ class AreaRepositoryImpl(
 ) : AreaRepository {
 
     override suspend fun getAreas(): AreaResult {
+        if (areasStorage.isLoaded()) {
+            return AreaResult.Success(areasStorage.getCountries().orEmpty())
+        }
+
         val response = networkClient.doRequest(AreasRequest)
         return when (response.resultCode) {
             NO_INTERNET -> AreaResult.NoInternet
@@ -53,16 +57,8 @@ class AreaRepositoryImpl(
         return areasStorage.getCountries()
     }
 
-    override fun getRegions(): List<FilterArea>? {
-        return areasStorage.getRegions().toRegionsList()
-    }
-
     override fun getParentByRegionId(id: Int): FilterArea? {
         return areasStorage.getParentByRegionId(id)
-    }
-
-    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
-        return areasStorage.getRegionsByCountryId(id).toRegionsList()
     }
 
     private fun AreaResult.toRegionsResult(): RegionsResult {
@@ -78,13 +74,6 @@ class AreaRepositoryImpl(
             AreaResult.ServerError -> RegionsResult.ServerError
             AreaResult.Empty -> RegionsResult.Empty
             AreaResult.Error -> RegionsResult.Error
-        }
-    }
-
-    private fun AreaResult.toRegionsList(): List<FilterArea>? {
-        return when (this) {
-            is AreaResult.Success -> areas
-            else -> null
         }
     }
 
