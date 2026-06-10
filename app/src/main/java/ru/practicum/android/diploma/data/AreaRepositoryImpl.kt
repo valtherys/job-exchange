@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.data
 
 import ru.practicum.android.diploma.data.dto.AreasRequest
 import ru.practicum.android.diploma.data.dto.FilterAreaDto
-import ru.practicum.android.diploma.data.mapper.buildRegionsList
 import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
@@ -34,20 +33,20 @@ class AreaRepositoryImpl(
     }
 
     override suspend fun getRegions(countryId: Int): RegionsResult {
-        return when (val areasResult = getAreas()) {
-            AreaResult.NoInternet -> RegionsResult.NoInternet
-            AreaResult.ServerError -> RegionsResult.ServerError
-            AreaResult.Empty -> RegionsResult.Empty
-            AreaResult.Error -> RegionsResult.Error
-            is AreaResult.Success -> {
-                val regions = areasResult.areas.buildRegionsList(countryId)
-                if (regions.isEmpty()) {
-                    RegionsResult.Empty
-                } else {
-                    RegionsResult.Success(regions)
-                }
+        if (!areasStorage.isLoaded()) {
+            val loadResult = getAreas()
+            if (loadResult !is AreaResult.Success) {
+                return loadResult.toRegionsResult()
             }
         }
+
+        val regionsResult = if (countryId == AreasStorage.NO_COUNTRY_ID) {
+            areasStorage.getRegions()
+        } else {
+            areasStorage.getRegionsByCountryId(countryId)
+        }
+
+        return regionsResult.toRegionsResult()
     }
 
     override fun getCountries(): List<FilterArea>? {
@@ -55,7 +54,7 @@ class AreaRepositoryImpl(
     }
 
     override fun getRegions(): List<FilterArea>? {
-        return areasStorage.getRegions()
+        return areasStorage.getRegions().toRegionsList()
     }
 
     override fun getParentByRegionId(id: Int): FilterArea? {
@@ -63,7 +62,30 @@ class AreaRepositoryImpl(
     }
 
     override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
-        return areasStorage.getRegionsByCountryId(id)
+        return areasStorage.getRegionsByCountryId(id).toRegionsList()
+    }
+
+    private fun AreaResult.toRegionsResult(): RegionsResult {
+        return when (this) {
+            is AreaResult.Success -> {
+                if (areas.isEmpty()) {
+                    RegionsResult.Empty
+                } else {
+                    RegionsResult.Success(areas)
+                }
+            }
+            AreaResult.NoInternet -> RegionsResult.NoInternet
+            AreaResult.ServerError -> RegionsResult.ServerError
+            AreaResult.Empty -> RegionsResult.Empty
+            AreaResult.Error -> RegionsResult.Error
+        }
+    }
+
+    private fun AreaResult.toRegionsList(): List<FilterArea>? {
+        return when (this) {
+            is AreaResult.Success -> areas
+            else -> null
+        }
     }
 
     private companion object {
