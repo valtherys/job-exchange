@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.VacancyActionInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDbInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDetailInteractor
+import ru.practicum.android.diploma.domain.api.actions.VacancyActionInteractor
+import ru.practicum.android.diploma.domain.api.db.VacancyDbInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacancyDetailInteractor
 import ru.practicum.android.diploma.domain.models.GetVacancyDetailsResponse
 import ru.practicum.android.diploma.domain.models.VacancyAction
 import ru.practicum.android.diploma.presentation.vacancy.state.VacancyDetailsUiState

@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.FiltrationInteractor
-import ru.practicum.android.diploma.domain.api.SearchInteractor
+import ru.practicum.android.diploma.domain.api.search.SearchInteractor
+import ru.practicum.android.diploma.domain.api.storage.FiltrationInteractor
 import ru.practicum.android.diploma.domain.models.SearchVacanciesOutcome
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.state.JobSearchState
@@ -42,12 +42,8 @@ class JobSearchViewModel(
     private var maxPages = 0
 
     init {
-        _searchQuery
-            .debounce(SEARCH_DEBOUNCE_MS)
-            .distinctUntilChanged()
-            .filter { it.query.isNotBlank() }
-            .onEach { queryParams -> performSearch(query = queryParams.query, page = 0) }
-            .launchIn(viewModelScope)
+        _searchQuery.debounce(SEARCH_DEBOUNCE_MS).distinctUntilChanged().filter { it.query.isNotBlank() }
+            .onEach { queryParams -> performSearch(query = queryParams.query, page = 0) }.launchIn(viewModelScope)
     }
 
     fun onSearchQueryChanged(query: String) {

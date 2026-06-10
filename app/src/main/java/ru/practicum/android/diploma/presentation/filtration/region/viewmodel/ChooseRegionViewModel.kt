@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.domain.api.AreaInteractor
+import ru.practicum.android.diploma.domain.api.area.AreaInteractor
 import ru.practicum.android.diploma.domain.models.RegionsResult
 import ru.practicum.android.diploma.presentation.filtration.region.mapper.toRegionUiList
 import ru.practicum.android.diploma.ui.filtration.region.fragment.ChooseRegionFragmentArgs
