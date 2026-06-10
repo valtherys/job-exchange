@@ -49,7 +49,7 @@ fun PlaceOfWorkScreen(
                 onCrossClick = onRegionCrossClick,
             )
             Spacer(modifier = Modifier.weight(1F))
-            if (state.country != null || state.region != null) {
+            if (state.buttonIsShowed) {
                 PrimaryButton(
                     modifier = Modifier.padding(bottom = 24.dp),
                     text = stringResource(R.string.place_of_work_apply),
