@@ -4,6 +4,7 @@ import ru.practicum.android.diploma.domain.api.AreaInteractor
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
 import ru.practicum.android.diploma.domain.models.FilterArea
+import ru.practicum.android.diploma.domain.models.RegionsResult
 
 class AreaInteractorImpl(
     private val areaRepository: AreaRepository,
@@ -12,16 +13,12 @@ class AreaInteractorImpl(
         return areaRepository.getAreas()
     }
 
+    override suspend fun getRegions(countryId: Int): RegionsResult {
+        return areaRepository.getRegions(countryId)
+    }
+
     override fun getCountries(): List<FilterArea>? {
         return areaRepository.getCountries()
-    }
-
-    override fun getRegions(): List<FilterArea>? {
-        return areaRepository.getRegions()
-    }
-
-    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
-        return areaRepository.getRegionsByCountryId(id)
     }
 
     override fun getParentByRegionId(id: Int): FilterArea? {

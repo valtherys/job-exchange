@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
 import ru.practicum.android.diploma.domain.models.FilterArea
+import ru.practicum.android.diploma.domain.models.RegionsResult
 
 class AreaRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -13,6 +14,10 @@ class AreaRepositoryImpl(
 ) : AreaRepository {
 
     override suspend fun getAreas(): AreaResult {
+        if (areasStorage.isLoaded()) {
+            return AreaResult.Success(areasStorage.getCountries().orEmpty())
+        }
+
         val response = networkClient.doRequest(AreasRequest)
         return when (response.resultCode) {
             NO_INTERNET -> AreaResult.NoInternet
@@ -31,20 +36,45 @@ class AreaRepositoryImpl(
         }
     }
 
-    override fun getCountries(): List<FilterArea>? {
-        return areasStorage.getCountries()
+    override suspend fun getRegions(countryId: Int): RegionsResult {
+        if (!areasStorage.isLoaded()) {
+            val loadResult = getAreas()
+            if (loadResult !is AreaResult.Success) {
+                return loadResult.toRegionsResult()
+            }
+        }
+
+        val regionsResult = if (countryId == AreasStorage.NO_COUNTRY_ID) {
+            areasStorage.getRegions()
+        } else {
+            areasStorage.getRegionsByCountryId(countryId)
+        }
+
+        return regionsResult.toRegionsResult()
     }
 
-    override fun getRegions(): List<FilterArea>? {
-        return areasStorage.getRegions()
+    override fun getCountries(): List<FilterArea>? {
+        return areasStorage.getCountries()
     }
 
     override fun getParentByRegionId(id: Int): FilterArea? {
         return areasStorage.getParentByRegionId(id)
     }
 
-    override fun getRegionsByCountryId(id: Int): List<FilterArea>? {
-        return areasStorage.getRegionsByCountryId(id)
+    private fun AreaResult.toRegionsResult(): RegionsResult {
+        return when (this) {
+            is AreaResult.Success -> {
+                if (areas.isEmpty()) {
+                    RegionsResult.Empty
+                } else {
+                    RegionsResult.Success(areas)
+                }
+            }
+            AreaResult.NoInternet -> RegionsResult.NoInternet
+            AreaResult.ServerError -> RegionsResult.ServerError
+            AreaResult.Empty -> RegionsResult.Empty
+            AreaResult.Error -> RegionsResult.Error
+        }
     }
 
     private companion object {
