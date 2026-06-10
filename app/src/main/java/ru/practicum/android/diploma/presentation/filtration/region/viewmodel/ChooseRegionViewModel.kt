@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,7 @@ class ChooseRegionViewModel(
     private val countryId: Int = ChooseRegionFragmentArgs.fromSavedStateHandle(savedStateHandle).countryId
 
     private var allRegions: List<RegionUi> = emptyList()
+    private var filterJob: Job? = null
 
     private val _state = MutableStateFlow(ChooseRegionUiState(isLoading = true))
     val state: StateFlow<ChooseRegionUiState> = _state.asStateFlow()
@@ -34,15 +36,12 @@ class ChooseRegionViewModel(
     }
 
     fun onSearchQueryChanged(query: String) {
-        viewModelScope.launch {
-            publishFilteredRegions(query)
-        }
+        _state.update { it.copy(searchQuery = query) }
+        scheduleFilter(query)
     }
 
     fun onClearSearchClicked() {
-        viewModelScope.launch {
-            publishFilteredRegions(searchQuery = "")
-        }
+        onSearchQueryChanged("")
     }
 
     private fun loadRegions() {
@@ -64,7 +63,7 @@ class ChooseRegionViewModel(
 
             if (loadedRegions != null) {
                 allRegions = loadedRegions
-                publishFilteredRegions(_state.value.searchQuery)
+                scheduleFilter(_state.value.searchQuery)
             } else {
                 _state.update {
                     it.copy(
@@ -77,26 +76,36 @@ class ChooseRegionViewModel(
         }
     }
 
-    private suspend fun publishFilteredRegions(searchQuery: String) {
-        val trimmedQuery = searchQuery.trim()
-        val filteredRegions = withContext(Dispatchers.Default) {
-            if (trimmedQuery.isEmpty()) {
-                allRegions
-            } else {
-                allRegions.filter { region ->
-                    region.name.contains(trimmedQuery, ignoreCase = true)
-                }
+    private fun scheduleFilter(searchQuery: String) {
+        filterJob?.cancel()
+        filterJob = viewModelScope.launch {
+            val trimmedQuery = searchQuery.trim()
+            val filteredRegions = withContext(Dispatchers.Default) {
+                filterRegions(trimmedQuery)
+            }
+
+            if (_state.value.searchQuery != searchQuery) {
+                return@launch
+            }
+
+            _state.update {
+                it.copy(
+                    regions = filteredRegions,
+                    isLoading = false,
+                    isError = false,
+                    isEmptySearchResult = trimmedQuery.isNotEmpty() && filteredRegions.isEmpty(),
+                )
             }
         }
+    }
 
-        _state.update {
-            it.copy(
-                searchQuery = searchQuery,
-                regions = filteredRegions,
-                isLoading = false,
-                isError = false,
-                isEmptySearchResult = trimmedQuery.isNotEmpty() && filteredRegions.isEmpty(),
-            )
+    private fun filterRegions(trimmedQuery: String): List<RegionUi> {
+        return if (trimmedQuery.isEmpty()) {
+            allRegions
+        } else {
+            allRegions.filter { region ->
+                region.name.contains(trimmedQuery, ignoreCase = true)
+            }
         }
     }
 }
