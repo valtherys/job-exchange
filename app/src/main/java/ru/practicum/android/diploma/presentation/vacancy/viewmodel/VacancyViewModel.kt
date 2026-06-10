@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.presentation.vacancy.state.VacancyDetailsUiS
 import ru.practicum.android.diploma.ui.vacancy.fragment.VacancyFragmentArgs
 
 class VacancyViewModel(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val vacancyDetailInteractor: VacancyDetailInteractor,
     private val vacancyActionInteractor: VacancyActionInteractor,
     private val vacancyDbInteractor: VacancyDbInteractor
@@ -62,7 +62,9 @@ class VacancyViewModel(
     }
 
     fun onAction(action: VacancyAction) {
-        viewModelScope.launch { vacancyActionInteractor.handleAction(action) }
+        if (state.value is VacancyDetailsUiState.Content) {
+            viewModelScope.launch { vacancyActionInteractor.handleAction(action) }
+        }
     }
 
     fun toggleFavoriteClick() {

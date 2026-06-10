@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.VacancyAction
+import ru.practicum.android.diploma.presentation.vacancy.state.VacancyDetailsUiState
 import ru.practicum.android.diploma.presentation.vacancy.viewmodel.VacancyViewModel
 import ru.practicum.android.diploma.ui.theme.AppTheme
 import ru.practicum.android.diploma.ui.vacancy.screen.VacancyScreen
@@ -40,7 +41,7 @@ class VacancyFragment : Fragment() {
                 state = state,
                 onLoadVacancy = viewModel::loadVacancy,
                 onBackClick = { findNavController().navigateUp() },
-                onShareClick = { url -> onShareClick(url) },
+                onShareClick = { url -> onShareClick(url, state) },
                 onFavoriteClick = { viewModel.toggleFavoriteClick() },
                 onEmailClick = { email -> onEmailClick(email) },
                 onPhoneClick = { phone -> onPhoneClick(phone) },
@@ -48,12 +49,15 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    private fun onShareClick(url: String) {
+    private fun onShareClick(url: String, state: VacancyDetailsUiState) {
         viewModel.onAction(
             VacancyAction.ShareVacancy(
                 url,
-                getString(R.string.share_link),
-            ),
+                getString(
+                    R.string.share_vacancy_title,
+                    (state as VacancyDetailsUiState.Content).details.name
+                )
+            )
         )
     }
 
@@ -62,7 +66,7 @@ class VacancyFragment : Fragment() {
             VacancyAction.EmailClick(
                 email,
                 getString(R.string.send_email),
-            ),
+            )
         )
     }
 
@@ -71,7 +75,7 @@ class VacancyFragment : Fragment() {
             VacancyAction.PhoneNumberClick(
                 phone,
                 getString(R.string.make_call),
-            ),
+            )
         )
     }
 }
