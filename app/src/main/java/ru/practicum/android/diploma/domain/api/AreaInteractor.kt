@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.domain.api
 
 import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.CountriesResult
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.RegionsResult
 
@@ -9,7 +10,7 @@ interface AreaInteractor {
 
     suspend fun getRegions(countryId: Int): RegionsResult
 
-    fun getCountries(): List<FilterArea>?
+    suspend fun getCountries(): CountriesResult
 
     fun getParentByRegionId(id: Int): FilterArea?
 }

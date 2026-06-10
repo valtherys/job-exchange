@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.data.dto.FilterAreaDto
 import ru.practicum.android.diploma.data.storage.AreasStorage
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.CountriesResult
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.RegionsResult
 
@@ -15,7 +16,7 @@ class AreaRepositoryImpl(
 
     override suspend fun getAreas(): AreaResult {
         if (areasStorage.isLoaded()) {
-            return AreaResult.Success(areasStorage.getCountries().orEmpty())
+            return areasStorage.getCountries()
         }
 
         val response = networkClient.doRequest(AreasRequest)
@@ -32,6 +33,7 @@ class AreaRepositoryImpl(
                     AreaResult.Success(areas)
                 }
             }
+
             else -> AreaResult.Error
         }
     }
@@ -53,8 +55,17 @@ class AreaRepositoryImpl(
         return regionsResult.toRegionsResult()
     }
 
-    override fun getCountries(): List<FilterArea>? {
-        return areasStorage.getCountries()
+    override suspend fun getCountries(): CountriesResult {
+        if (!areasStorage.isLoaded()) {
+            val loadResult = getAreas()
+            if (loadResult !is AreaResult.Success) {
+                return loadResult.toCountryResult()
+            }
+        }
+
+        val regionsResult = areasStorage.getCountries()
+
+        return regionsResult.toCountryResult()
     }
 
     override fun getParentByRegionId(id: Int): FilterArea? {
@@ -70,10 +81,28 @@ class AreaRepositoryImpl(
                     RegionsResult.Success(areas)
                 }
             }
+
             AreaResult.NoInternet -> RegionsResult.NoInternet
             AreaResult.ServerError -> RegionsResult.ServerError
             AreaResult.Empty -> RegionsResult.Empty
             AreaResult.Error -> RegionsResult.Error
+        }
+    }
+
+    private fun AreaResult.toCountryResult(): CountriesResult {
+        return when (this) {
+            is AreaResult.Success -> {
+                if (areas.isEmpty()) {
+                    CountriesResult.Empty
+                } else {
+                    CountriesResult.Success(areas)
+                }
+            }
+
+            AreaResult.NoInternet -> CountriesResult.NoInternet
+            AreaResult.ServerError -> CountriesResult.ServerError
+            AreaResult.Empty -> CountriesResult.Empty
+            AreaResult.Error -> CountriesResult.Error
         }
     }
 
