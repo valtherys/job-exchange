@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.AreaInteractor
-import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.RegionsResult
 import ru.practicum.android.diploma.presentation.filtration.region.mapper.toRegionUiList
 import ru.practicum.android.diploma.ui.filtration.region.fragment.ChooseRegionFragmentArgs
 import ru.practicum.android.diploma.ui.filtration.region.model.RegionUi
@@ -48,16 +48,16 @@ class ChooseRegionViewModel(
                     isEmptySearchResult = false,
                 )
             }
-            when (val result = areaInteractor.getAreas()) {
-                is AreaResult.Success -> {
-                    allRegions = result.areas.toRegionUiList(countryId)
+            when (val result = areaInteractor.getRegions(countryId)) {
+                is RegionsResult.Success -> {
+                    allRegions = result.regions.toRegionUiList()
                     publishFilteredRegions(_state.value.searchQuery)
                 }
 
-                is AreaResult.NoInternet,
-                is AreaResult.ServerError,
-                is AreaResult.Empty,
-                is AreaResult.Error,
+                is RegionsResult.NoInternet,
+                is RegionsResult.ServerError,
+                is RegionsResult.Empty,
+                is RegionsResult.Error,
                 -> {
                     _state.update {
                         it.copy(
