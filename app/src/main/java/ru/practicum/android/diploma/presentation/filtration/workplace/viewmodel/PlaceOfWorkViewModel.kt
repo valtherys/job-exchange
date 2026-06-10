@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.domain.api.AreaInteractor
+import ru.practicum.android.diploma.domain.api.area.AreaInteractor
 import ru.practicum.android.diploma.presentation.filtration.workplace.state.AreaUi
 import ru.practicum.android.diploma.presentation.filtration.workplace.state.PlaceOfWorkUIState
 
