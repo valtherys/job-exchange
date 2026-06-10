@@ -18,7 +18,9 @@ class AreasStorage {
             .sortedBy { region -> region.name }
     }
 
-    fun getCountries(): List<FilterArea>? = countries
+    fun getCountries(): AreaResult {
+        return countries.orEmpty().toAreaResult()
+    }
 
     fun getRegions(): AreaResult {
         return regions.orEmpty().toAreaResult()

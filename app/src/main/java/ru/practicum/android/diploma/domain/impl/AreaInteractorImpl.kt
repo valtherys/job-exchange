@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.domain.impl
 import ru.practicum.android.diploma.domain.api.AreaInteractor
 import ru.practicum.android.diploma.domain.api.AreaRepository
 import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.CountriesResult
 import ru.practicum.android.diploma.domain.models.FilterArea
 import ru.practicum.android.diploma.domain.models.RegionsResult
 
@@ -17,7 +18,7 @@ class AreaInteractorImpl(
         return areaRepository.getRegions(countryId)
     }
 
-    override fun getCountries(): List<FilterArea>? {
+    override suspend fun getCountries(): CountriesResult {
         return areaRepository.getCountries()
     }
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.AreaInteractor
-import ru.practicum.android.diploma.domain.models.AreaResult
+import ru.practicum.android.diploma.domain.models.CountriesResult
 import ru.practicum.android.diploma.presentation.filtration.country.mapper.toCountryUIList
 import ru.practicum.android.diploma.presentation.filtration.country.state.ChooseCountryUIState
 
@@ -23,15 +23,15 @@ class ChooseCountryViewModel(
 
     private fun loadCountries() {
         viewModelScope.launch {
-            when (val result = areaInteractor.getAreas()) {
-                is AreaResult.Success -> {
-                    _state.value = ChooseCountryUIState.Content(result.areas.toCountryUIList())
+            when (val result = areaInteractor.getCountries()) {
+                is CountriesResult.Success -> {
+                    _state.value = ChooseCountryUIState.Content(result.countries.toCountryUIList())
                 }
 
-                AreaResult.Empty,
-                AreaResult.Error,
-                AreaResult.NoInternet,
-                AreaResult.ServerError -> {
+                CountriesResult.Empty,
+                CountriesResult.Error,
+                CountriesResult.NoInternet,
+                CountriesResult.ServerError -> {
                     _state.value = ChooseCountryUIState.Error
                 }
             }
