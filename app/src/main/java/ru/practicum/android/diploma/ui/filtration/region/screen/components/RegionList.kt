@@ -1,6 +1,10 @@
 package ru.practicum.android.diploma.ui.filtration.region.screen.components
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +17,7 @@ import ru.practicum.android.diploma.ui.filtration.region.model.RegionUi
 import ru.practicum.android.diploma.ui.theme.Dimens
 
 private val RegionListTopPadding = 8.dp
+private val RegionListBottomPadding = 16.dp
 
 @Composable
 fun RegionList(
@@ -28,6 +33,11 @@ fun RegionList(
                 top = RegionListTopPadding,
                 end = Dimens.ScreenHorizontalPadding,
             ),
+        contentPadding = PaddingValues(
+            bottom = WindowInsets.navigationBars
+                .asPaddingValues()
+                .calculateBottomPadding() + RegionListBottomPadding,
+        ),
     ) {
         items(
             items = regions,

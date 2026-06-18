@@ -60,7 +60,7 @@ private fun ChooseRegionContent(
         state.isLoading -> Loader(modifier = modifier.fillMaxSize())
 
         state.isError -> PlaceholderLayout(
-            imageRes = R.drawable.img_region_list_error,
+            imageRes = R.drawable.img_request_failure,
             textRes = R.string.choose_region_error,
         )
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.domain.api.FiltrationInteractor
+import ru.practicum.android.diploma.domain.api.storage.FiltrationInteractor
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.FilterParameters
 import ru.practicum.android.diploma.presentation.filtration.state.FiltrationUIState
@@ -109,6 +109,7 @@ class FiltrationViewModel(private val filtrationInteractor: FiltrationInteractor
 
     private fun shouldShowButtons(state: FiltrationUIState): Boolean {
         val hasActiveFilters = state.salary != null || state.onlyWithSalary || state.industry != null
+            || state.area != null
         return hasActiveFilters || state.toFilterParameters() != savedFilterParameters
     }
 
