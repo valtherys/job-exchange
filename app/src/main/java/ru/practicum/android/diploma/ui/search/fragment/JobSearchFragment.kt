@@ -33,7 +33,8 @@ class JobSearchFragment : Fragment() {
 
                     JobSearchScreen(
                         state = state.value,
-                        searchQuery = query.value,
+                        searchQuery = query.value.query,
+                        hasActiveFilter = query.value.hasActiveFilter,
                         onSearchTextChange = { viewModel.onSearchQueryChanged(it) },
                         onVacancyClick = { vacancyId ->
                             findNavController().navigate(
@@ -44,11 +45,22 @@ class JobSearchFragment : Fragment() {
                         },
                         onClear = { viewModel.clearSearch() },
                         onLoadNextPage = { viewModel.loadNextPage() },
-                        onNetworkError = { showToast(context.getString(R.string.network_error_toast)) }
+                        onNetworkError = { showToast(context.getString(R.string.network_error_toast)) },
+                        onFilterClick = {
+                            findNavController().navigate(
+                                JobSearchFragmentDirections
+                                    .actionJobSearchFragmentToFiltrationFragment()
+                            )
+                        }
                     )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateActiveFilters()
     }
 
     fun showToast(message: String?) {
