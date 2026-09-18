@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.domain.api.FiltrationInteractor
-import ru.practicum.android.diploma.domain.api.IndustryInteractor
+import ru.practicum.android.diploma.domain.api.industry.IndustryInteractor
+import ru.practicum.android.diploma.domain.api.storage.FiltrationInteractor
 import ru.practicum.android.diploma.domain.models.FilterIndustry
 import ru.practicum.android.diploma.domain.models.IndustryResult
 import ru.practicum.android.diploma.presentation.filtration.industry.state.IndustryScreenState
@@ -74,7 +74,7 @@ class IndustryViewModel(
                 is IndustryResult.Error,
                 is IndustryResult.NoInternet,
                 is IndustryResult.ServerError,
-                    -> publishState(status = IndustryScreenState.Error)
+                -> publishState(status = IndustryScreenState.Error)
             }
         }
     }

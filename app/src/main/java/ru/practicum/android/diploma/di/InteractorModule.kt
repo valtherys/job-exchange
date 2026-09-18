@@ -1,20 +1,20 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
-import ru.practicum.android.diploma.domain.api.AreaInteractor
-import ru.practicum.android.diploma.domain.api.FiltrationInteractor
-import ru.practicum.android.diploma.domain.api.IndustryInteractor
-import ru.practicum.android.diploma.domain.api.SearchInteractor
-import ru.practicum.android.diploma.domain.api.VacancyActionInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDbInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDetailInteractor
-import ru.practicum.android.diploma.domain.impl.AreaInteractorImpl
-import ru.practicum.android.diploma.domain.impl.FiltrationInteractorImpl
-import ru.practicum.android.diploma.domain.impl.IndustryInteractorImpl
-import ru.practicum.android.diploma.domain.impl.SearchInteractorImpl
-import ru.practicum.android.diploma.domain.impl.VacancyActionInteractorImpl
-import ru.practicum.android.diploma.domain.impl.VacancyDbInteractorImpl
-import ru.practicum.android.diploma.domain.impl.VacancyDetailInteractorImpl
+import ru.practicum.android.diploma.domain.api.actions.VacancyActionInteractor
+import ru.practicum.android.diploma.domain.api.area.AreaInteractor
+import ru.practicum.android.diploma.domain.api.db.VacancyDbInteractor
+import ru.practicum.android.diploma.domain.api.industry.IndustryInteractor
+import ru.practicum.android.diploma.domain.api.search.SearchInteractor
+import ru.practicum.android.diploma.domain.api.storage.FiltrationInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacancyDetailInteractor
+import ru.practicum.android.diploma.domain.impl.action.VacancyActionInteractorImpl
+import ru.practicum.android.diploma.domain.impl.area.AreaInteractorImpl
+import ru.practicum.android.diploma.domain.impl.db.VacancyDbInteractorImpl
+import ru.practicum.android.diploma.domain.impl.industry.IndustryInteractorImpl
+import ru.practicum.android.diploma.domain.impl.search.SearchInteractorImpl
+import ru.practicum.android.diploma.domain.impl.storage.FiltrationInteractorImpl
+import ru.practicum.android.diploma.domain.impl.vacancy.VacancyDetailInteractorImpl
 
 val interactorModule = module {
     single<SearchInteractor> {

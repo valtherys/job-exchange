@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -41,43 +42,48 @@ class FiltrationFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    val state by viewModel.state.collectAsStateWithLifecycle()
-
-                    FiltrationScreen(
-                        industryName = state.industry?.name,
-                        salary = state.salary?.toString().orEmpty(),
-                        dontShowWithoutSalaryChecked = state.onlyWithSalary,
-                        placeOfWork = state.area,
-                        showButtons = state.showButtons,
-                        onCheckedChange = { viewModel.onOnlyWithSalaryChanged(it) },
-                        onSearchTextChange = { viewModel.onSalaryChanged(it) },
-                        onClear = { viewModel.onSalaryCleared() },
-                        onApplyClick = {
-                            viewLifecycleOwner.lifecycleScope.launch {
-                                viewModel.saveFilters()
-                                findNavController().popBackStack()
-                            }
-                        },
-                        onCancelClick = { viewModel.resetFilters() },
-                        onNavClick = { findNavController().popBackStack() },
-                        onIndustryClick = {
-                            findNavController().navigate(
-                                R.id.action_filtrationFragment_to_industryFragment,
-                            )
-                        },
-                        onAreaClick = {
-                            findNavController().navigate(
-                                R.id.action_filtrationFragment_to_placeOfWorkFragment,
-                            )
-                        },
-                        onIndustryClear = { viewModel.clearIndustry() },
-                        onAreaClear = { viewModel.onClearArea() },
-                    )
-                }
-            }
+            setContent { FiltrationContent() }
         }
+    }
+
+    @Composable
+    private fun FiltrationContent() {
+        AppTheme {
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            FiltrationScreen(
+                industryName = state.industry?.name,
+                salary = state.salary?.toString().orEmpty(),
+                dontShowWithoutSalaryChecked = state.onlyWithSalary,
+                placeOfWork = state.area,
+                showButtons = state.showButtons,
+                onCheckedChange = { viewModel.onOnlyWithSalaryChanged(it) },
+                onSearchTextChange = { viewModel.onSalaryChanged(it) },
+                onClear = { viewModel.onSalaryCleared() },
+                onApplyClick = { onApplyClick() },
+                onCancelClick = { viewModel.resetFilters() },
+                onNavClick = { navController.popBackStack() },
+                onIndustryClick = { navigateToIndustry() },
+                onAreaClick = { navigateToPlaceOfWork() },
+                onIndustryClear = { viewModel.clearIndustry() },
+                onAreaClear = { viewModel.onClearArea() },
+            )
+        }
+    }
+
+    private fun onApplyClick() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.saveFilters()
+            navController.popBackStack()
+        }
+    }
+
+    private fun navigateToIndustry() {
+        navController.navigate(R.id.action_filtrationFragment_to_industryFragment)
+    }
+
+    private fun navigateToPlaceOfWork() {
+        navController.navigate(R.id.action_filtrationFragment_to_placeOfWorkFragment)
     }
 
     private fun observeAreaResult() {

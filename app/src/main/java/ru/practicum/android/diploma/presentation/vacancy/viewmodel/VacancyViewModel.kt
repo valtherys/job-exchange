@@ -9,16 +9,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.VacancyActionInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDbInteractor
-import ru.practicum.android.diploma.domain.api.VacancyDetailInteractor
+import ru.practicum.android.diploma.domain.api.actions.VacancyActionInteractor
+import ru.practicum.android.diploma.domain.api.db.VacancyDbInteractor
+import ru.practicum.android.diploma.domain.api.vacancy.VacancyDetailInteractor
 import ru.practicum.android.diploma.domain.models.GetVacancyDetailsResponse
 import ru.practicum.android.diploma.domain.models.VacancyAction
 import ru.practicum.android.diploma.presentation.vacancy.state.VacancyDetailsUiState
 import ru.practicum.android.diploma.ui.vacancy.fragment.VacancyFragmentArgs
 
 class VacancyViewModel(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val vacancyDetailInteractor: VacancyDetailInteractor,
     private val vacancyActionInteractor: VacancyActionInteractor,
     private val vacancyDbInteractor: VacancyDbInteractor
@@ -62,7 +62,9 @@ class VacancyViewModel(
     }
 
     fun onAction(action: VacancyAction) {
-        viewModelScope.launch { vacancyActionInteractor.handleAction(action) }
+        if (state.value is VacancyDetailsUiState.Content) {
+            viewModelScope.launch { vacancyActionInteractor.handleAction(action) }
+        }
     }
 
     fun toggleFavoriteClick() {

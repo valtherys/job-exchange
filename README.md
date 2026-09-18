@@ -1,102 +1,123 @@
-# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"
+# 💼 Job Exchange
 
-Проект представляет собой стартовую точку для разработки дипломного проекта Яндекс.Практикума по
-курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/).
+**Job Exchange** is an Android application for searching and managing job vacancies.
 
-# Предварительная настройка проекта
+The app allows users to search for vacancies, apply filters, view detailed information, and save interesting vacancies to favorites.
 
-## Добавление секретного токена API для поиска вакансий
+## ✨ Features
 
-Для проброса секретного токена для использования API, сгенерированного на [специальной странице](https://android-diploma.education-services.ru/login), создайте в корне проекта файл 
-`develop.properties` и добавьте туда одно свойство:
+* 🔎 **Vacancy Search** — search vacancies by keywords
+* 🎛️ **Filtering** — filter vacancies by country, region, industry, and workplace type
+* 📄 **Vacancy Details** — view detailed vacancy information, salary, company, requirements, and contacts
+* ❤️ **Favorites** — save and manage favorite vacancies locally
+* 🌐 **Network Handling** — handle network availability and API errors
+* 👥 **Team Screen** — view project team members
+
+## 🛠 Tech Stack
+
+* **Kotlin**
+* **Jetpack Compose + Material 3** — UI
+* **MVVM** — presentation architecture
+* **Kotlin Coroutines** — asynchronous operations
+* **Retrofit** — network requests
+* **Room** — local database
+* **Koin** — dependency injection
+* **Navigation Component** — screen navigation
+* **Coil** — image loading
+* **Java / JVM:** 17
+* **Min Android API:** 29
+
+## 🏗 Architecture
+
+The project follows a layered architecture with separation of presentation, domain, and data responsibilities.
+
+```text
+UI
+ ↓
+ViewModel
+ ↓
+Interactor
+ ↓
+Repository
+ ↓
+Data source
+```
+
+Main layers:
+
+* `presentation` — ViewModels and UI state
+* `ui` — Jetpack Compose screens and reusable UI components
+* `domain` — business logic, interfaces, and domain models
+* `data` — API, Room database, repositories, DTOs, and mappers
+* `di` — Koin dependency injection modules
+
+## 💾 Data
+
+The app works with both remote and local data sources:
+
+* 🌐 **Remote:** vacancy API accessed via Retrofit
+* 💾 **Local:** Room database for favorite vacancies
+* ⚙️ **Local storage:** saved filtration parameters
+
+## 🔑 API Configuration
+
+The app requires an API access token to search for vacancies.
+
+To run the application locally:
+
+1. Get an API access token from the [API authorization page](https://android-diploma.education-services.ru/login).
+2. Create a `develop.properties` file in the project root.
+3. Add the following property:
 
 ```properties
 apiAccessToken=my_access_token
 ```
 
-Вместо `my_access_token` вставьте полученный после регистрации токен доступа к API для поиска вакансий. После изменения значения
-синхронизируйте проект.
+Replace `my_access_token` with your personal token.
 
-Файл `develop.properties` игнорируется при коммитах в Git, поэтому можно не бояться, что значение токена попадёт в
-открытый доступ. Значения, записанные в файл `develop.properties`, будут добавлены в приложение на стадии сборки и
-попадут в специальный объект, который называется `BuildConfig`. Подробнее про этот объект можно почитать
-в [документации](https://developer.android.com/build/gradle-tips#share-custom-fields-and-resource-values-with-your-app-code).
+> **Important:** `develop.properties` contains a secret token and must not be committed to version control or shared publicly.
 
-## Статический анализ
+## 📱 Screenshots
 
-В проекте настроен базовый статический анализатор - [detekt](https://detekt.dev/).
-Он проверит наличие большого количества стандартных ошибок при написании Kotlin-кода.
+| 🔎 Vacancy Search                                | ❤️ Favorites                                        |
+| ------------------------------------------------ | --------------------------------------------------- |
+| <img src="./app/src/main/res/drawable/img_search.jpg" width="250"> | <img src="./app/src/main/res/drawable/img_favorite_vacancies.jpg" width="250"> |
 
-Конфигурационный файл detekt находится [здесь](./conf/detekt.yml). Описание смысла правил можно найти
-в официальной документации detekt - [например, вот правила группы `comments`](https://detekt.dev/docs/rules/comments).
+| 🎛️ Filter Settings                                                    | 📄 Vacancy Details                                               |
+|------------------------------------------------------------------------|------------------------------------------------------------------|
+| <img src="./app/src/main/res/drawable/img_filtration.jpg" width="250"> | <img src="./app/src/main/res/drawable/img_vacancy.jpg" width="250"> |
 
-Чтобы проверить наличие ошибок detekt в проекте, откройте терминал и выполните команду `./gradlew detektAll`. После
-выполнения в выводе терминала вы увидите список ошибок, если они у вас есть, рядом с каждой ошибкой будет находиться
-ссылка на кусочек кода, где detekt обнаружил ошибку.
+| 👥 Team                                                |
+|------------------------------------------------------------------------| 
+| <img src="./app/src/main/res/drawable/img_team.jpg" width="250"> | 
 
-Также в проекте настроена команда, которая исправляет большое количество ошибок форматирования detekt. Чтобы запустить
-её, откройте терминал и выполните команду `./gradlew detektFormat`.
+## 🚀 Build
 
-## Настройка Github Actions
+### Requirements
 
-В дипломном проекте используется сервис [Github Actions](https://github.com/features/actions) для настройки CI (
-Continuous Integration). Это позволяет автоматизировать базовые проверки качества приложения, такие как компиляция
-проекта и прогон статического анализатора [detekt](https://github.com/detekt/detekt). Файл конфигурации CI вы
-можете [найти здесь](./.github/workflows/pr_checks.yml).
+* Android Studio
+* JDK 17
+* Android SDK 36
+* Android 10 / API 29+
 
-На каждый созданный pull request CI-сервер:
+### Build debug APK
 
-- Скомпилирует проект и соберёт APK приложения, описанного в модуле `app`. Готовый APK можно скачивать на свой телефон
-  или передавать на тестирование другим разработчикам или ревьюверам.
-- И запустит статический анализатор `detekt`, чтобы подсветить наличие или отсутствие ошибок, которые можно обнаружить,
-  не запуская приложение. В частности, это поможет вам соблюдать принятый на проекте код-стайл.
+Linux / macOS:
 
-Чтобы автоматические проверки могли запускаться на каждый созданный pull request, необходимо сделать несколько
-дополнительных действий:
+```bash
+./gradlew assembleDebug
+```
 
-- Активировать `Github Actions` в вашем форке дипломного проекта.
-- И добавить токен API для поиска вакансий в секреты репозитория.
+Windows:
 
-### Шаг 1 - Активация Github Actions
+```bat
+gradlew.bat assembleDebug
+```
 
-По умолчанию Github отключает настроенные `Github Actions` для каждого форка оригинального репозитория. Это сделано для
-того, чтобы каждый разработчик и разработчица осознанно применяли описанные конфигурации CI (мало ли что настроено в
-оригинальном репозитории!).
+## 👩‍💻 Team
 
-Чтобы активировать `Github Actions` в форке дипломного проекта, необходимо зайти во вкладку `Actions`:
+**[valtherys](https://github.com/valtherys)**
+**[denzelandrioki](https://github.com/denzelandrioki)**
+**[h0mepvnk](https://github.com/h0mepvnk)**
+**[Deathriot](https://github.com/Deathriot)**
 
-![Вкладка "Actions"](./docs/img/github_actions_setup__actions_tab.png)
-
-А затем нажать на зелёную кнопку - так вы даёте своё согласие на запуск описанных в репозитории
-файлов-конфигураций `Github Actions`:
-
-![Зелёная кнопка согласия](./docs/img/github_actions_setup__workflow_button.png)
-
-### Шаг 2 - Добавление токена API для поиска вакансий в секреты проекта
-
-Файл `develop.properties` не хранится в истории коммитов, однако значение токена API для поиска вакансий необходимо для успешной
-сборки APK приложения. Чтобы CI-сервер смог получить значение токена, его нужно добавить
-в [секреты репозитория для Github Actions](https://docs.github.com/ru/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
-
-Откройте вкладку `Settings` с главной страницы форка:
-
-![Вкладка "Settings"](./docs/img/github_actions_setup__settings_tag.png)
-
-В левой части экрана найдите раздел `Security`, в нём есть пункт `Secrets and variables` (цифра (1) на скриншоте). При
-нажатии на этот пункт появится выпадающий список, в котором будет элемент списка `Actions` (цифра (2) на скриншоте).
-
-![Security -> Secrets and variables -> Actions](./docs/img/github_actions_setup__action_secrets.png)
-
-Нажмите на этот элемент списка и в правой части экрана вы увидите блок, который называется `Repository secrets`:
-
-![Пустой Repository secrets](./docs/img/github_actions_setup__no_repository_secrets.png)
-
-Нажмите на кнопку `New repository secret`. В появившемся окне в качестве названия секрета укажите `GH_API_ACCESS_TOKEN`,
-а в качестве значения укажите тот же токен, что вы добавляли в файл `develop.properties`:
-
-![Добавление нового секрета](./docs/img/github_actions_setup__new_repository_secret.png)
-
-После ввода ключа и значения нажмите кнопку `Add secret`. Если вы всё сделали правильно, то вы должны увидеть
-обновлённый блок `Repository secrets`:
-
-![Секрет успешно добавлен](./docs/img/github_actions_setup__added_repository_secret.png)

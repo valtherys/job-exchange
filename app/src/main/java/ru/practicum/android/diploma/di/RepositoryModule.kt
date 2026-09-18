@@ -1,18 +1,18 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
-import ru.practicum.android.diploma.data.AreaRepositoryImpl
-import ru.practicum.android.diploma.data.FiltrationRepositoryImpl
-import ru.practicum.android.diploma.data.IndustryRepositoryImpl
-import ru.practicum.android.diploma.data.VacanciesRepositoryImpl
-import ru.practicum.android.diploma.data.VacancyDbRepositoryImpl
-import ru.practicum.android.diploma.data.VacancyDetailsRepositoryImpl
-import ru.practicum.android.diploma.domain.api.AreaRepository
-import ru.practicum.android.diploma.domain.api.FiltrationRepository
-import ru.practicum.android.diploma.domain.api.IndustryRepository
-import ru.practicum.android.diploma.domain.api.VacanciesRepository
-import ru.practicum.android.diploma.domain.api.VacancyDbRepository
-import ru.practicum.android.diploma.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.data.area.AreaRepositoryImpl
+import ru.practicum.android.diploma.data.db.VacancyDbRepositoryImpl
+import ru.practicum.android.diploma.data.industry.IndustryRepositoryImpl
+import ru.practicum.android.diploma.data.search.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.data.storage.FiltrationRepositoryImpl
+import ru.practicum.android.diploma.data.vacancy.VacancyDetailsRepositoryImpl
+import ru.practicum.android.diploma.domain.api.area.AreaRepository
+import ru.practicum.android.diploma.domain.api.db.VacancyDbRepository
+import ru.practicum.android.diploma.domain.api.industry.IndustryRepository
+import ru.practicum.android.diploma.domain.api.search.VacanciesRepository
+import ru.practicum.android.diploma.domain.api.storage.FiltrationRepository
+import ru.practicum.android.diploma.domain.api.vacancy.VacancyDetailsRepository
 
 val repositoryModule = module {
 
@@ -37,6 +37,6 @@ val repositoryModule = module {
     }
 
     single<AreaRepository> {
-        AreaRepositoryImpl(get())
+        AreaRepositoryImpl(get(), get())
     }
 }

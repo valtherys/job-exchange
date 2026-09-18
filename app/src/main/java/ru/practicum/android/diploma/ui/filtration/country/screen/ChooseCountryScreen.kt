@@ -63,7 +63,7 @@ private fun CountriesList(modifier: Modifier = Modifier, countries: List<Country
 @Composable
 private fun CountryError() {
     PlaceholderLayout(
-        imageRes = R.drawable.img_no_results,
+        imageRes = R.drawable.img_request_failure,
         textRes = R.string.choose_country_error
     )
 }

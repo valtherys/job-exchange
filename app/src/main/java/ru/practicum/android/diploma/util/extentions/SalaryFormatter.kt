@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.util.extentions
 import ru.practicum.android.diploma.domain.models.Salary
 
 fun Salary?.formatSalary(labels: SalaryFormatLabels): String {
-    if (this == null || (from == null && to == null)) {
+    if (this == null || from == null && to == null) {
         return labels.emptyText
     }
 
